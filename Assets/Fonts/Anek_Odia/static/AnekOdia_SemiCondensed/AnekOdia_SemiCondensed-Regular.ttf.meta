@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: 77d72dc5b9195024db5c43bf19f5cfa1
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Anek Odia SemiCondensed
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 8263b2f97b0921445aab281ea6f474a5, type: 3}
+  - {fileID: 12800000, guid: 05314ea864863684aac7b604b2b9f2c8, type: 3}
+  - {fileID: 12800000, guid: f516fd89291a2ae4280b77b351f2f2da, type: 3}
+  - {fileID: 12800000, guid: 07802d7158bc8c74ebb0a55a79c636ef, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -116,7 +116,9 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        catch (Exception e) { Debug.Log("E:" + e); }
+        catch (Exception e) {
+            //Debug.Log("E:" + e);
+        }
     }
 
     // Legacy

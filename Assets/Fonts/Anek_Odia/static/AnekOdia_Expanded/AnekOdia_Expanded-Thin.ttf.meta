@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: d1ae24d589d30a548b1c9f815b8b2639
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Anek Odia Expanded
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 90028b04edc56d446a86d54aa6751717, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
