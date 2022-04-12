@@ -16,6 +16,8 @@ public class SelectionManager : MonoBehaviour
 
     string previousHit;
     private List<GameObject> redTiles = new List<GameObject>();
+    public SetupManager setupManager;
+    public string currentCursorShip;
 
     private void Start()
     {
@@ -33,6 +35,9 @@ public class SelectionManager : MonoBehaviour
         string newLength = pref.name.Substring(0, 1);
         selectedLength = Int32.Parse(newLength);
         GameObject ship = Instantiate(pref, new Vector3(0, 0, 0), Quaternion.identity, GameObject.FindGameObjectWithTag("Canvas").transform);
+        string l = newLength;
+        string n = pref.name.Substring(4, 1);
+        currentCursorShip = "Ship_" + l + "_0" + n;
     }
 
     void Update()
@@ -173,6 +178,28 @@ public class SelectionManager : MonoBehaviour
         {
             obj.GetComponent<MeshRenderer>().material = defaultMat;
         }
+    }
+
+    public void mouseDownOnHighlight()
+    {
+        setupManager.CreateShip(GameObject.Find(MakeCast()), currentCursorShip);
+    }
+
+    public string MakeCast()
+    {
+        RaycastHit hitInfo = new RaycastHit();
+        bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
+        if (hit)
+        {
+            if (hitInfo.transform.gameObject.tag == "FloorPlaceable")
+            {
+                // If we hit any tiles, we want to return them
+                string hitName = hitInfo.transform.gameObject.name;
+                return hitName;
+            }
+            else { return "false"; }
+        }
+        else { return "false"; }
     }
 
     // Legacy
