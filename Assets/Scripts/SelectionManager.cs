@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class SelectionManager : MonoBehaviour
 {
     // Defining vars, setting default params
     public Material highlightMat;
@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> tiles = new List<GameObject>();
     private GameObject tileParent;
     public int selectedLength = 3;
+    public bool isFacingDefault = true;
 
     string previousHit;
     private List<GameObject> redTiles = new List<GameObject>();
@@ -83,24 +84,49 @@ public class GameManager : MonoBehaviour
             // if-else statement.
             int prevRounded = 0;
             bool onNewLine = false;
-            for (int i = 0; i < selectedLength; i++)
+
+            if (isFacingDefault)
             {
-                int val = i + hitNumber;
-                int rounded = (int)Math.Round(((i + hitNumber) - 4.5f) / 10.0) * 10;
-
-                if (i == 0) { prevRounded = rounded; }
-                if (prevRounded != rounded)
+                for (int i = 0; i < selectedLength; i++)
                 {
-                    onNewLine = true;
-                }
-                prevRounded = rounded;
-            }
+                    int val = i + hitNumber;
+                    int rounded = (int)Math.Round(((i + hitNumber) - 4.5f) / 10.0) * 10;
 
+                    if (i == 0) { prevRounded = rounded; }
+                    if (prevRounded != rounded)
+                    {
+                        onNewLine = true;
+                    }
+                    prevRounded = rounded;
+                }
+            }
+            else if (!isFacingDefault)
+            {
+                for (int i = 0; i < selectedLength; i++)
+                {
+                    int val = hitNumber - i * 10;
+                    if (val < 0)
+                    {
+                        onNewLine = true;
+                    }
+                }
+            }
+            
             // Swaps each tile colour if on same line
             if (onNewLine == false) {
-                for (int i = 0; i < Length; i++)
+                if (isFacingDefault)
                 {
-                    tiles[hitNumber + i].GetComponent<MeshRenderer>().material = mat;
+                    for (int i = 0; i < Length; i++)
+                    {
+                        tiles[hitNumber + i].GetComponent<MeshRenderer>().material = mat;
+                    }
+                }
+                else if (!isFacingDefault)
+                {
+                    for (int i = 0; i < Length; i++)
+                    {
+                        tiles[hitNumber - i*10].GetComponent<MeshRenderer>().material = mat;
+                    }
                 }
             }
 
@@ -108,16 +134,44 @@ public class GameManager : MonoBehaviour
             {
                 // Finds the nearest lowest 10 of the hitNumber.
                 // I.e. 78 returns 70, 43 returns 40 and so on.
-                int rounded = (int)Math.Round((hitNumber - 4.5f) / 10.0) * 10;
-                for (int i = 0; i < 10; i++)
+                if (isFacingDefault)
                 {
-                    tiles[rounded + i].GetComponent<MeshRenderer>().material = redMat;
-                    redTiles.Add(tiles[rounded + i]);
+                    int rounded = (int)Math.Round((hitNumber - 4.5f) / 10.0) * 10;
+                    for (int i = 0; i < 10; i++)
+                    {
+                        tiles[rounded + i].GetComponent<MeshRenderer>().material = redMat;
+                        redTiles.Add(tiles[rounded + i]);
+                    }
+                }
+                else if (!isFacingDefault)
+                {
+                    char smallest = hitNumber.ToString()[hitNumber.ToString().Length - 1];
+                    string small = smallest.ToString();
+                    for (int i = 0; i < 10; i++)
+                    {
+                        int intSmall = Int32.Parse(small);
+                        int next = intSmall + (i) * 10;
+                        tiles[next].GetComponent<MeshRenderer>().material = redMat;
+                        redTiles.Add(tiles[next]);
+                        if (next == 90) 
+                        {
+                            tiles[next + 10].GetComponent<MeshRenderer>().material = redMat;
+                            redTiles.Add(tiles[next + 10]);
+                        }
+                    }
                 }
             }
         }
         catch (Exception e) {
             //Debug.Log("E:" + e);
+        }
+    }
+
+    public void cleanTiles()
+    {
+        foreach (GameObject obj in tiles)
+        {
+            obj.GetComponent<MeshRenderer>().material = defaultMat;
         }
     }
 
