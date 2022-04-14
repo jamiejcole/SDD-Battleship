@@ -22,7 +22,7 @@ public class ManualCameraRotator : MonoBehaviour
         {
             transform.Rotate(0, -rotateSpeed * Time.deltaTime, 0);
         }
-        
+
         if ((Input.GetKey("a") || Input.GetKey("left")) && yRotation <= 102)
         {
             transform.Rotate(0, rotateSpeed * Time.deltaTime, 0);

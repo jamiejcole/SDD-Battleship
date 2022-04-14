@@ -83,39 +83,9 @@ public class SelectionManager : MonoBehaviour
             preFormat = preFormat.Substring(Hit.Length - 3);
             int hitNumber = Int32.Parse(preFormat);
 
-            // This for loop determines whether the selected length of placement
-            // occurs on a new line or not. This will affect whether the line is
-            // red highlighted (error) or highlighted yellow (fine) in the next
-            // if-else statement.
-            int prevRounded = 0;
-            bool onNewLine = false;
-
-            if (isFacingDefault)
-            {
-                for (int i = 0; i < selectedLength; i++)
-                {
-                    int val = i + hitNumber;
-                    int rounded = (int)Math.Round(((i + hitNumber) - 4.5f) / 10.0) * 10;
-
-                    if (i == 0) { prevRounded = rounded; }
-                    if (prevRounded != rounded)
-                    {
-                        onNewLine = true;
-                    }
-                    prevRounded = rounded;
-                }
-            }
-            else if (!isFacingDefault)
-            {
-                for (int i = 0; i < selectedLength; i++)
-                {
-                    int val = hitNumber - i * 10;
-                    if (val < 0)
-                    {
-                        onNewLine = true;
-                    }
-                }
-            }
+            // Calls function to determine whether selection is on new line. Calling
+            // from external instance of object for sake of reducing redundancy.
+            bool onNewLine = setupManager.CheckOnNewLine(Length, hitNumber, isFacingDefault);
             
             // Swaps each tile colour if on same line
             if (onNewLine == false) {
@@ -167,7 +137,7 @@ public class SelectionManager : MonoBehaviour
                 }
             }
         }
-        catch (Exception e) {
+        catch {
             //Debug.Log("E:" + e);
         }
     }
