@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SelectionManager : MonoBehaviour
 {
@@ -13,6 +15,7 @@ public class SelectionManager : MonoBehaviour
     private GameObject tileParent;
     public int selectedLength = 3;
     public bool isFacingDefault = true;
+    public bool isHighlighting = false;
 
     string previousHit;
     private List<GameObject> redTiles = new List<GameObject>();
@@ -42,32 +45,37 @@ public class SelectionManager : MonoBehaviour
 
     void Update()
     {
-        RaycastHit hitInfo = new RaycastHit();
-        bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
-        if (hit)
+        if (isHighlighting)
         {
-            if (hitInfo.transform.gameObject.tag == "FloorPlaceable")
-            {
-                // If we hit any tiles, we want to highlight them
-                string hitName = hitInfo.transform.gameObject.name;
-                swapTiles(hitName, selectedLength, true);
+            cleanTiles();
 
-                // But, if the new tile is different to the old tile, make the previous tile non-highlighted
-                if (previousHit != hitName && previousHit != null)
+            RaycastHit hitInfo = new RaycastHit();
+            bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
+            if (hit)
+            {
+                if (hitInfo.transform.gameObject.tag == "FloorPlaceable")
                 {
-                    swapTiles(previousHit, selectedLength, false);
-                    for (int i = 0; i < redTiles.Count; i++)
-                    {
-                        redTiles[i].GetComponent<MeshRenderer>().material = defaultMat;
-                    }
-                }
+                    // If we hit any tiles, we want to highlight them
+                    string hitName = hitInfo.transform.gameObject.name;
+                    swapTiles(hitName, selectedLength, true);
 
-                previousHit = hitName;
-            }
-            else
-            {
-                // If we don't hit any tiles, make the previous tile non-highlighted
-                swapTiles(previousHit, selectedLength, false);
+                    // But, if the new tile is different to the old tile, make the previous tile non-highlighted
+                    if (previousHit != hitName && previousHit != null)
+                    {
+                        swapTiles(previousHit, selectedLength, false);
+                        for (int i = 0; i < redTiles.Count; i++)
+                        {
+                            redTiles[i].GetComponent<MeshRenderer>().material = defaultMat;
+                        }
+                    }
+
+                    previousHit = hitName;
+                }
+                else
+                {
+                    // If we don't hit any tiles, make the previous tile non-highlighted
+                    swapTiles(previousHit, selectedLength, false);
+                }
             }
         }
     }
@@ -150,9 +158,9 @@ public class SelectionManager : MonoBehaviour
         }
     }
 
-    public void mouseDownOnHighlight()
+    public bool mouseDownOnHighlight()
     {
-        setupManager.CreateShip(GameObject.Find(MakeCast()), currentCursorShip);
+        return setupManager.CreateShip(GameObject.Find(MakeCast()), currentCursorShip);
     }
 
     public string MakeCast()

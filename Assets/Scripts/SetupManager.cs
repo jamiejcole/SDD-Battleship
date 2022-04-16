@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SetupManager : MonoBehaviour
 {
@@ -14,12 +16,22 @@ public class SetupManager : MonoBehaviour
     public SelectionManager selectionManager;
     public List<int> occupiedTiles = new List<int>();
 
-    public void CreateShip(GameObject tile, string type)
+    public bool CreateShip(GameObject tile, string type)
     {
         GameObject spawnObj;
         spawnObj = GetField(type);
+        Vector3 originalPos;
 
-        Vector3 originalPos = tile.transform.position;
+        // If you click somewhere that's not a tile, just return false.
+        try
+        {
+            originalPos = tile.transform.position;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+        
         Vector3 spawnPos = new Vector3(originalPos.x + 0.5f, originalPos.y + 1, originalPos.z + 0.5f);
         Quaternion rotation;
 
@@ -38,6 +50,16 @@ public class SetupManager : MonoBehaviour
             {
                 occupiedTiles.Add(x);
             }
+            return true;
+
+            // Disabling the button selector
+            //GameObject buttonObj = EventSystem.current.currentSelectedGameObject;
+            //Button actualButton = buttonObj.GetComponent<Button>();
+            //actualButton.interactable = false;
+        }
+        else
+        {
+            return false;
         }
         // TODO: Add an else, and highlight a tile line/ship red
     }
