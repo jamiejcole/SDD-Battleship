@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8225975311441442930}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: mShip_3_01
-  m_TagString: Untagged
+  m_TagString: Ship
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.5, y: 0, z: 1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2733138475000147167}
   m_Father: {fileID: 0}
@@ -38,9 +39,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8225975311441442930}
     m_Modifications:
+    - target: {fileID: 2911121213184623330, guid: 766c949a33243884e9543ecb919aa4e9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 6191229792488667707, guid: 766c949a33243884e9543ecb919aa4e9, type: 3}
       propertyPath: m_Name
       value: ship_3_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6191229792488667707, guid: 766c949a33243884e9543ecb919aa4e9, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6818584100856291457, guid: 766c949a33243884e9543ecb919aa4e9, type: 3}
       propertyPath: m_RootOrder
@@ -97,3 +106,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6818584100856291457, guid: 766c949a33243884e9543ecb919aa4e9, type: 3}
   m_PrefabInstance: {fileID: 8885167668974079070}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5992063195089800892 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2911121213184623330, guid: 766c949a33243884e9543ecb919aa4e9, type: 3}
+  m_PrefabInstance: {fileID: 8885167668974079070}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &5359320589493777764
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5992063195089800892}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2432090755550338912, guid: 17edfc20acddf7e4aba997cfa8f399db, type: 3}

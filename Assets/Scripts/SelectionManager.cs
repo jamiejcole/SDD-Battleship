@@ -43,6 +43,12 @@ public class SelectionManager : MonoBehaviour
         currentCursorShip = "Ship_" + l + "_0" + n;
     }
 
+    public void openTrash(GameObject pref)
+    {
+        GameObject trash = Instantiate(pref, new Vector3(0, 0, 0), Quaternion.identity, GameObject.FindGameObjectWithTag("Canvas").transform);
+
+    }
+
     void Update()
     {
         if (isHighlighting)

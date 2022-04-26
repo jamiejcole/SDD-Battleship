@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3971315182143519089}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: mShip_4_01
-  m_TagString: Untagged
+  m_TagString: Ship
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.5, y: 0, z: 1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1766511999372528931}
   m_Father: {fileID: 0}
@@ -90,6 +91,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: ship_4_01
       objectReference: {fileID: 0}
+    - target: {fileID: 676743795427388895, guid: 92fc4262e9d1c694f9ed078a30ee618e, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8424419631451952390, guid: 92fc4262e9d1c694f9ed078a30ee618e, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92fc4262e9d1c694f9ed078a30ee618e, type: 3}
 --- !u!4 &1766511999372528931 stripped
@@ -97,3 +106,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 157509756030187365, guid: 92fc4262e9d1c694f9ed078a30ee618e, type: 3}
   m_PrefabInstance: {fileID: 1922050797055965766}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7946023203762319168 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8424419631451952390, guid: 92fc4262e9d1c694f9ed078a30ee618e, type: 3}
+  m_PrefabInstance: {fileID: 1922050797055965766}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &3661615970693818591
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7946023203762319168}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2432090755550338912, guid: 6106958174e3f9b4d91f025e76804791, type: 3}
