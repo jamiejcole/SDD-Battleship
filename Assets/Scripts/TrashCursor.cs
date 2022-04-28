@@ -9,7 +9,14 @@ public class TrashCursor : MonoBehaviour
     public Material highlightMat;
     public Material defaultMat;
 
+    ShipButtonManager shipButtonManager;
+
     private GameObject[] gameObjs;
+
+    private void Start()
+    {
+        shipButtonManager = GameObject.Find("ShipButtonManager").GetComponent<ShipButtonManager>();
+    }
 
     void Update()
     {
@@ -33,7 +40,12 @@ public class TrashCursor : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             flushHighlight();
-            Destroy(hitInfo.transform.gameObject);
+            Destroy(hitInfo.transform.parent.parent.gameObject);
+
+            string shipName = hitInfo.transform.parent.parent.gameObject.name;
+            Debug.Log(shipName);
+            shipButtonManager.ToggleButton(shipName, true);
+
             Destroy(gameObject);
         }
         if (Input.GetMouseButton(1))

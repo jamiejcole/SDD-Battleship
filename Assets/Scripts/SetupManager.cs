@@ -15,7 +15,12 @@ public class SetupManager : MonoBehaviour
 
     public SelectionManager selectionManager;
     public List<int> occupiedTiles = new List<int>();
+    ShipButtonManager shipButtonManager;
 
+    private void Start()
+    {
+        shipButtonManager = GameObject.Find("ShipButtonManager").GetComponent<ShipButtonManager>();
+    }
     public bool CreateShip(GameObject tile, string type)
     {
         GameObject spawnObj;
@@ -50,12 +55,10 @@ public class SetupManager : MonoBehaviour
             {
                 occupiedTiles.Add(x);
             }
-            return true;
-
             // Disabling the button selector
-            //GameObject buttonObj = EventSystem.current.currentSelectedGameObject;
-            //Button actualButton = buttonObj.GetComponent<Button>();
-            //actualButton.interactable = false;
+            string tempShipName = "m" + type + "(Clone)";
+            shipButtonManager.ToggleButton(tempShipName, false);
+            return true;  
         }
         else
         {
