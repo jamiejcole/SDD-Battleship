@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,12 +11,14 @@ public class TrashCursor : MonoBehaviour
     public Material defaultMat;
 
     ShipButtonManager shipButtonManager;
+    SetupManager setupManager;
 
     private GameObject[] gameObjs;
 
     private void Start()
     {
         shipButtonManager = GameObject.Find("ShipButtonManager").GetComponent<ShipButtonManager>();
+        setupManager = GameObject.Find("SetupManager").GetComponent<SetupManager>();
     }
 
     void Update()
@@ -40,11 +43,34 @@ public class TrashCursor : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             flushHighlight();
+            string shipName;
+
+            // We try to get the 2x parent of the hit ship's mesh, if it doesn't exist, we didn't hit a ship, so return.
+            try
+            {
+                shipName = hitInfo.transform.parent.parent.gameObject.name;
+            }
+            catch (Exception)
+            {
+                return;
+            }
+
             Destroy(hitInfo.transform.parent.parent.gameObject);
 
-            string shipName = hitInfo.transform.parent.parent.gameObject.name;
-            Debug.Log(shipName);
             shipButtonManager.ToggleButton(shipName, true);
+
+            // Add logic for removing the ship's occupied tile nums from the occupiedTiles list in SetupManager.cs
+            // add a list in setupmanager.cs that keeps hold of each ships start tile positions 
+            // from the corresponding ship pos or ship name, so that it can be called when
+            // trying to determine the start tile index of a ships placement on the board
+            string newShipName = shipName.Remove(0, 1).Remove(9, 7);
+            (int, bool) shipStartData;
+
+            setupManager.shipStartPositions.TryGetValue(newShipName, out shipStartData);
+
+            setupManager.RemoveShipFromOccupied(setupManager.FindLengthOfShip(newShipName), shipStartData.Item1, shipStartData.Item2);
+            // remove the item from the dict once remFromOccu is called
+            setupManager.shipStartPositions.Remove(newShipName);
 
             Destroy(gameObject);
         }

@@ -7,15 +7,17 @@ using UnityEngine.UI;
 
 public class SetupManager : MonoBehaviour
 {
+    ShipButtonManager shipButtonManager;
+    public SelectionManager selectionManager;
+
     public GameObject Ship_2_01;
     public GameObject Ship_3_01;
     public GameObject Ship_3_02;
     public GameObject Ship_4_01;
     public GameObject Ship_5_01;
 
-    public SelectionManager selectionManager;
     public List<int> occupiedTiles = new List<int>();
-    ShipButtonManager shipButtonManager;
+    public Dictionary<string, (int, bool)> shipStartPositions = new Dictionary<string, (int, bool)>();
 
     private void Start()
     {
@@ -55,6 +57,10 @@ public class SetupManager : MonoBehaviour
             {
                 occupiedTiles.Add(x);
             }
+            // Add the start position of the ship to the shipStartPositions Dict
+            //Debug.Log($"{type}, ({TILENUM}, {DEFAULT})");
+            shipStartPositions.Add(type, (TILENUM, DEFAULT));
+
             // Disabling the button selector
             string tempShipName = "m" + type + "(Clone)";
             shipButtonManager.ToggleButton(tempShipName, false);
@@ -67,7 +73,7 @@ public class SetupManager : MonoBehaviour
         // TODO: Add an else, and highlight a tile line/ship red
     }
 
-    // works
+    // todo: remove tiles from occupied list if ships are trashed 
     private List<int> AddItemsToOccupied(int Length, int tileNum, bool isFacingDefault)
     {
         List<int> list = new List<int>();
@@ -88,6 +94,23 @@ public class SetupManager : MonoBehaviour
         return list;
     }
 
+    public void RemoveShipFromOccupied(int Length, int tileNum, bool isFacingDefault)
+    {
+        List<int> toBeRemoved = AddItemsToOccupied(Length, tileNum, isFacingDefault);
+        foreach (var removed in toBeRemoved)
+        {
+            occupiedTiles.RemoveAll(item => item == removed);
+        }
+    }
+
+    public void LogShipStartPositionsDict()
+    {
+        foreach (KeyValuePair<string, (int, bool)> x in shipStartPositions)
+        {
+            Debug.Log($"KVP: {x.Key}, {x.Value}");
+        }
+    }
+
     // works
     public int FindLengthOfShip(string name)
     {
@@ -105,8 +128,7 @@ public class SetupManager : MonoBehaviour
         return modifInt;
     }
 
-    // DOESNT WORK
-    private bool CheckLegalPlacement(int Length, int tileNum, bool isFacingDefault)
+    public bool CheckLegalPlacement(int Length, int tileNum, bool isFacingDefault)
     {
         bool onNewLine = CheckOnNewLine(Length, tileNum, isFacingDefault);
         bool intersects = CheckShipIntersections(Length, tileNum, isFacingDefault);

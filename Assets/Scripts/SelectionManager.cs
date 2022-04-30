@@ -102,7 +102,7 @@ public class SelectionManager : MonoBehaviour
             bool onNewLine = setupManager.CheckOnNewLine(Length, hitNumber, isFacingDefault);
             
             // Swaps each tile colour if on same line
-            if (onNewLine == false) {
+            if (onNewLine == false && setupManager.CheckLegalPlacement(Length, hitNumber, isFacingDefault)) {
                 if (isFacingDefault)
                 {
                     for (int i = 0; i < Length; i++)
@@ -163,6 +163,7 @@ public class SelectionManager : MonoBehaviour
             obj.GetComponent<MeshRenderer>().material = defaultMat;
         }
     }
+
 
     public bool mouseDownOnHighlight()
     {
