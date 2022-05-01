@@ -2077,6 +2077,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b4db44bc407e864398354fbed406673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Ship_2_01:
+    tileNum: 0
+    Length: 0
+    isDefault: 0
+  Ship_3_01:
+    tileNum: 0
+    Length: 0
+    isDefault: 0
+  Ship_3_02:
+    tileNum: 0
+    Length: 0
+    isDefault: 0
+  Ship_4_01:
+    tileNum: 0
+    Length: 0
+    isDefault: 0
+  Ship_5_01:
+    tileNum: 0
+    Length: 0
+    isDefault: 0
+  playerOne:
+    Ship_2_01:
+      tileNum: 0
+      Length: 0
+      isDefault: 0
+    Ship_3_01:
+      tileNum: 0
+      Length: 0
+      isDefault: 0
+    Ship_3_02:
+      tileNum: 0
+      Length: 0
+      isDefault: 0
+    Ship_4_01:
+      tileNum: 0
+      Length: 0
+      isDefault: 0
+    Ship_5_01:
+      tileNum: 0
+      Length: 0
+      isDefault: 0
 --- !u!4 &294157548
 Transform:
   m_ObjectHideFlags: 0
@@ -8153,7 +8194,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1371433692}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1983949087}
+        m_TargetAssemblyTypeName: SetupManager, Assembly-CSharp
+        m_MethodName: ConfirmShipSelection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1381639652 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4084504788478774, guid: fcc4229f634be704aa0dd336ad33c2b5, type: 3}

@@ -9,6 +9,8 @@ public class SetupManager : MonoBehaviour
 {
     ShipButtonManager shipButtonManager;
     public SelectionManager selectionManager;
+    GameManager gameManager;
+
 
     public GameObject Ship_2_01;
     public GameObject Ship_3_01;
@@ -22,6 +24,8 @@ public class SetupManager : MonoBehaviour
     private void Start()
     {
         shipButtonManager = GameObject.Find("ShipButtonManager").GetComponent<ShipButtonManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
     }
     public bool CreateShip(GameObject tile, string type)
     {
@@ -92,6 +96,11 @@ public class SetupManager : MonoBehaviour
             }
         }
         return list;
+    }
+
+    public void ConfirmShipSelection()
+    {
+        gameManager.GeneratePlayer(shipStartPositions);
     }
 
     public void RemoveShipFromOccupied(int Length, int tileNum, bool isFacingDefault)
