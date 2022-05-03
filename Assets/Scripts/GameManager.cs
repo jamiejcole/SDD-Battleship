@@ -2,12 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    // this file/gameobject needs to be DontDestroyOnLoad or whatever it is
-    // such that it can exist between scenes
-
     [Serializable]
     public class Ship
     {
@@ -59,10 +58,28 @@ public class GameManager : MonoBehaviour
     public Player playerOne;
     public Player playerTwo;
 
+    public GameObject messagePopupPrefab;
+
+
+    // Singleton Implementation of GameManager:
+    private static GameManager _instance;
+    public static GameManager Instance { get { return _instance; } }
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+
     private void Start()
     {
-       
-        
+        DontDestroyOnLoad(this.gameObject);
     }
 
     public void GeneratePlayer(Dictionary<string, (int, bool)> ShipStartPositions, bool firstPlayer)
@@ -88,11 +105,32 @@ public class GameManager : MonoBehaviour
         if (firstPlayer)
         {
             playerOne = new Player(Ship_2_01, Ship_3_01, Ship_3_02, Ship_4_01, Ship_5_01);
+            CreatePopup("Loading Player 2 ship selection...");
+            StartCoroutine(LoadSceneAfterSeconds("PlayerTwoSelection", 3f));
         }
         else
         {
             playerTwo = new Player(Ship_2_01, Ship_3_01, Ship_3_02, Ship_4_01, Ship_5_01);
         }
+    }
+
+    public IEnumerator DeleteObjectAfterSeconds(GameObject obj, float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        Destroy(obj);
+    }
+
+    IEnumerator LoadSceneAfterSeconds(string scene, float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        SceneManager.LoadScene(scene);
+    }
+
+    public void CreatePopup(string text)
+    {
+        GameObject popup = Instantiate(messagePopupPrefab, GameObject.Find("Canvas").transform);
+        popup.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = text;
+        StartCoroutine(DeleteObjectAfterSeconds(popup, 3f));
     }
 
     public static void OnHitEvent(int tileNum)
