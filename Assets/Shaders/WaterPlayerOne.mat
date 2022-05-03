@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4450259688523820889
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: WaterPlayerOne
+  m_Shader: {fileID: -6465566751694194690, guid: ec98c4895708e754ea2612a7b600d49e, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - Vector1_50d7487b6fd64f7c83ad482e913a264c: 1
+    - Vector1_82e602b165754041ae769f54be33dd87: 5
+    - Vector1_da27875f16e74865b3c1537c7fc6a4c8: 24
+    - Vector1_f3cf7b5659a641399c98671478b4a42b: 0.05
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    m_Colors:
+    - Color_5d4e1ad5ac84491e9992dfc95b71d9bc: {r: 0.2509804, g: 0.7372549, b: 2, a: 0}
+    - Color_67ccbe500b414f8a8c9853f7360ea6ef: {r: 0.12735844, g: 0.6424368, b: 1, a: 0}
+  m_BuildTextureStacks: []

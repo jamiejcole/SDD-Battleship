@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Cartoon Water
+  m_Name: WaterPlayerTwo
   m_Shader: {fileID: -6465566751694194690, guid: ec98c4895708e754ea2612a7b600d49e, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -54,6 +54,6 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - Color_5d4e1ad5ac84491e9992dfc95b71d9bc: {r: 0.2509804, g: 0.7372549, b: 2, a: 0}
-    - Color_67ccbe500b414f8a8c9853f7360ea6ef: {r: 0.12735844, g: 0.6424368, b: 1, a: 0}
+    - Color_5d4e1ad5ac84491e9992dfc95b71d9bc: {r: 0.25130892, g: 2, b: 1.959113, a: 0}
+    - Color_67ccbe500b414f8a8c9853f7360ea6ef: {r: 0.12549019, g: 0.919003, b: 1, a: 0}
   m_BuildTextureStacks: []
