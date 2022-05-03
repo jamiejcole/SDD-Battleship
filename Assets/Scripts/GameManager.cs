@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    // this file/gameobject needs to be DontDestroyOnLoad or whatever it is
+    // such that it can exist between scenes
+
     [Serializable]
     public class Ship
     {
@@ -54,6 +57,7 @@ public class GameManager : MonoBehaviour
     public Ship Ship_5_01;
 
     public Player playerOne;
+    public Player playerTwo;
 
     private void Start()
     {
@@ -61,7 +65,7 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public void GeneratePlayer(Dictionary<string, (int, bool)> ShipStartPositions)
+    public void GeneratePlayer(Dictionary<string, (int, bool)> ShipStartPositions, bool firstPlayer)
     {
         // Generates Ship objects for each position in the dict
         (int, bool) x;
@@ -81,7 +85,14 @@ public class GameManager : MonoBehaviour
         ShipStartPositions.TryGetValue("Ship_5_01", out x);
         Ship_5_01 = new Ship(x.Item1, 5, x.Item2);
 
-        playerOne = new Player(Ship_2_01, Ship_3_01, Ship_3_02, Ship_4_01, Ship_5_01);
+        if (firstPlayer)
+        {
+            playerOne = new Player(Ship_2_01, Ship_3_01, Ship_3_02, Ship_4_01, Ship_5_01);
+        }
+        else
+        {
+            playerTwo = new Player(Ship_2_01, Ship_3_01, Ship_3_02, Ship_4_01, Ship_5_01);
+        }
     }
 
     public static void OnHitEvent(int tileNum)

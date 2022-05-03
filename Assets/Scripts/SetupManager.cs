@@ -98,9 +98,9 @@ public class SetupManager : MonoBehaviour
         return list;
     }
 
-    public void ConfirmShipSelection()
+    public void ConfirmShipSelection(bool firstPlayer)
     {
-        gameManager.GeneratePlayer(shipStartPositions);
+        gameManager.GeneratePlayer(shipStartPositions, firstPlayer);
     }
 
     public void RemoveShipFromOccupied(int Length, int tileNum, bool isFacingDefault)

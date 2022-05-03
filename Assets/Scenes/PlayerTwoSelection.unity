@@ -2277,6 +2277,27 @@ MonoBehaviour:
       tileNum: 0
       Length: 0
       isDefault: 0
+  playerTwo:
+    Ship_2_01:
+      tileNum: 0
+      Length: 0
+      isDefault: 0
+    Ship_3_01:
+      tileNum: 0
+      Length: 0
+      isDefault: 0
+    Ship_3_02:
+      tileNum: 0
+      Length: 0
+      isDefault: 0
+    Ship_4_01:
+      tileNum: 0
+      Length: 0
+      isDefault: 0
+    Ship_5_01:
+      tileNum: 0
+      Length: 0
+      isDefault: 0
 --- !u!4 &294157548
 Transform:
   m_ObjectHideFlags: 0
@@ -8604,7 +8625,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1983949087}
         m_TargetAssemblyTypeName: SetupManager, Assembly-CSharp
         m_MethodName: ConfirmShipSelection
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
