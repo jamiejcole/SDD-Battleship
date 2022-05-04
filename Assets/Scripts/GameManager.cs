@@ -7,6 +7,8 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    // This Ship class allows individual Ship objects to be created which
+    // encapsulate data about any given ship on the board itself.
     [Serializable]
     public class Ship
     {
@@ -30,6 +32,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Each Player object consists of five Ship objects. These ship objects
+    // allow the Player object to contain all of the data created by the game
+    // once the user has placed their ships down in the pre-game lobby.
     [Serializable]
     public class Player
     {
@@ -82,9 +87,11 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
+
     public void GeneratePlayer(Dictionary<string, (int, bool)> ShipStartPositions, bool firstPlayer)
     {
         // Generates Ship objects for each position in the dict
+
         (int, bool) x;
 
         ShipStartPositions.TryGetValue("Ship_2_01", out x);
@@ -151,6 +158,7 @@ public class GameManager : MonoBehaviour
         var output = JsonUtility.ToJson(obj, true);
         Debug.Log(output);
     }
+
     public void DumpDictToConsole(Dictionary<int, bool> dict)
     {
         foreach (KeyValuePair<int, bool> x in dict)

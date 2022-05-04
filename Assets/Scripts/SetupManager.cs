@@ -62,7 +62,6 @@ public class SetupManager : MonoBehaviour
                 occupiedTiles.Add(x);
             }
             // Add the start position of the ship to the shipStartPositions Dict
-            //Debug.Log($"{type}, ({TILENUM}, {DEFAULT})");
             shipStartPositions.Add(type, (TILENUM, DEFAULT));
 
             // Disabling the button selector
