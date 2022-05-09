@@ -65,6 +65,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject messagePopupPrefab;
 
+    public string currentViewer;
+
 
     // Singleton Implementation of GameManager:
     private static GameManager _instance;
@@ -113,12 +115,58 @@ public class GameManager : MonoBehaviour
         {
             playerOne = new Player(Ship_2_01, Ship_3_01, Ship_3_02, Ship_4_01, Ship_5_01);
             CreatePopup("Loading Player 2 ship selection...");
-            StartCoroutine(LoadSceneAfterSeconds("PlayerTwoSelection", 3f));
+            StartCoroutine(LoadSceneAfterSeconds("PlayerTwoSelection", 0.1f));
+            SwapVisibility("PlayerTwo");
         }
         else
         {
-            playerTwo = new Player(Ship_2_01, Ship_3_01, Ship_3_02, Ship_4_01, Ship_5_01);
+            // Checking to see whether the playerTwo Player instance has been created or not
+            if (playerTwo.Ship_2_01.Length == 0)
+            {
+                playerTwo = new Player(Ship_2_01, Ship_3_01, Ship_3_02, Ship_4_01, Ship_5_01);
+                CreatePopup("Player Positions saved! Loading Game...");
+                SetSetupMenuItemsActive(false);
+                // Hide P2 ships, change Player icon to P1 + animate.
+            }
+            else
+            {
+                // TODO: deactivate the confirm button! + same for P1!
+            }
         }
+    }
+
+    public void SwapVisibility(string currentViewer)
+    {
+        GameObject[] playerOneObjs = GameObject.FindGameObjectsWithTag("PlayerOneVisible");
+        GameObject[] playerTwoObjs = GameObject.FindGameObjectsWithTag("PlayerTwoVisible");
+        
+        if (currentViewer == "PlayerOne")
+        {
+            foreach (GameObject Obj in playerTwoObjs)
+            {
+                Obj.SetActive(false);
+            }
+        }
+        else if (currentViewer == "PlayerTwo")
+        {
+            foreach (GameObject Obj in playerOneObjs)
+            {
+                Obj.SetActive(false);
+            }
+        }
+    }
+
+    public void SetSetupMenuItemsActive(bool hidden)
+    {
+        GameObject.Find("2U 01").SetActive(hidden);
+        GameObject.Find("3U 01").SetActive(hidden);
+        GameObject.Find("3U 02").SetActive(hidden);
+        GameObject.Find("4U 01").SetActive(hidden);
+        GameObject.Find("5U 01").SetActive(hidden);
+        GameObject.Find("ConfirmMoveButton").SetActive(hidden);
+        GameObject.Find("TrashIcon").SetActive(hidden);
+        // TODO: remove this in future when it is not needed
+        GameObject.Find("RandomPlace").SetActive(hidden);
     }
 
     public IEnumerator DeleteObjectAfterSeconds(GameObject obj, float seconds)

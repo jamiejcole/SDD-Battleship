@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SetupManager : MonoBehaviour
@@ -56,7 +57,7 @@ public class SetupManager : MonoBehaviour
 
         if (CheckLegalPlacement(LENGTH, TILENUM, DEFAULT))
         {
-            Instantiate(spawnObj, spawnPos, rotation);
+            GameObject shipInstance = Instantiate(spawnObj, spawnPos, rotation);
             foreach (var x in AddItemsToOccupied(LENGTH, TILENUM, DEFAULT))
             {
                 occupiedTiles.Add(x);
@@ -67,6 +68,19 @@ public class SetupManager : MonoBehaviour
             // Disabling the button selector
             string tempShipName = "m" + type + "(Clone)";
             shipButtonManager.ToggleButton(tempShipName, false);
+
+            // Changing the tag of the newly created ship to match the current player
+            String currentSceneName = SceneManager.GetActiveScene().name;
+            if (currentSceneName == "PlayerOneSelection")
+            {
+                shipInstance.tag = "PlayerOneVisible";
+            }
+            else if (currentSceneName == "PlayerTwoSelection")
+            {
+                shipInstance.tag = "PlayerTwoVisible";
+            }
+
+
             return true;  
         }
         else
