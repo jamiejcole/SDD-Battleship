@@ -6,6 +6,7 @@ public class RandomPlacement : MonoBehaviour
 {
     SetupManager setupManager;
     GameManager gameManager;
+    ComponentManager componentManager;
 
     public GameObject P1T1;
     public GameObject P1T2;
@@ -23,6 +24,7 @@ public class RandomPlacement : MonoBehaviour
     {
         setupManager = GameObject.Find("SetupManager").GetComponent<SetupManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        componentManager = GameObject.Find("ComponentManager").GetComponent<ComponentManager>();
     }
 
     public void GenRandomPlacements(bool playerOne)
@@ -47,10 +49,10 @@ public class RandomPlacement : MonoBehaviour
 
     public void TriggerHideMenuItems()
     {
-        gameManager.SetSetupMenuItemsActive(true);
+        componentManager.ToggleSetupMenuItems(true);
     }
     public void TriggerShowMenuItems()
     {
-        gameManager.SetSetupMenuItemsActive(false);
+        componentManager.ToggleSetupMenuItems(false);
     }
 }
