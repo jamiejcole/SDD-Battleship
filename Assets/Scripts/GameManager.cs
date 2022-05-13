@@ -69,8 +69,10 @@ public class GameManager : MonoBehaviour
     GameObject[] playerTwoObjs;
     public string currentViewer;
 
-    public PlayerMenuManager playerMenuManager;
     public ComponentManager componentManager;
+
+    public bool radarEnabled = false;
+    public bool setupMenuItemsEnabled = true;
 
     // Singleton Implementation of GameManager:
     private static GameManager _instance;
@@ -91,10 +93,22 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         DontDestroyOnLoad(this.gameObject);
-        playerMenuManager = GameObject.Find("PlayerMenu").GetComponent<PlayerMenuManager>();
         componentManager = GameObject.Find("ComponentManager").GetComponent<ComponentManager>();
     }
 
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        componentManager = GameObject.Find("ComponentManager").GetComponent<ComponentManager>();
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 
     public void GeneratePlayer(Dictionary<string, (int, bool)> ShipStartPositions, bool firstPlayer)
     {
@@ -137,8 +151,14 @@ public class GameManager : MonoBehaviour
                 playerTwoObjs = GameObject.FindGameObjectsWithTag("PlayerTwoVisible");
                 StartCoroutine(LoadSceneAfterSeconds("PlayerOneSelection", 1f));
                 SwapVisibility("PlayerOne");
-                componentManager.ToggleSetupMenuItems();            
-                // Hide P2 ships, change Player icon to P1 + animate.
+
+
+                // Changing menu items visiblity
+                setupMenuItemsEnabled = false;
+                radarEnabled = true;
+
+                //componentManager.ToggleSetupMenuItems();
+                //componentManager.ToggleRadar(true);
             }
             else
             {
@@ -195,11 +215,8 @@ public class GameManager : MonoBehaviour
 
     IEnumerator LoadSceneAfterSeconds(string scene, float seconds)
     {
-        int player;
-        if (scene == "PlayerOneSelection") { player = 1; } else { player = 2; }
         yield return new WaitForSeconds(seconds);
         SceneManager.LoadScene(scene);
-        //playerMenuManager.ChangePlayerMenu(player);
     }
 
     public void CreatePopup(string text)

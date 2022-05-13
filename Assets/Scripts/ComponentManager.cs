@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ComponentManager : MonoBehaviour
 {
+    public GameManager gameManager;
+
     public GameObject playerRadar;
 
     public GameObject x2u01;
@@ -15,8 +17,15 @@ public class ComponentManager : MonoBehaviour
     public GameObject trashIcon;
     public GameObject randomPlace;
 
+    bool curRadarEnabled;
+    bool curMenuItemsEnabled;
+
+
+
     private void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         playerRadar = GameObject.Find("PlayerRadar");
         ToggleRadar();
 
@@ -30,9 +39,34 @@ public class ComponentManager : MonoBehaviour
         randomPlace = GameObject.Find("RandomPlace");
     }
 
+    public void Update()
+    {
+        curRadarEnabled = playerRadar.activeSelf;
+        curMenuItemsEnabled = x2u01.activeSelf;
+
+        if (curRadarEnabled != gameManager.radarEnabled)
+        {
+            ToggleRadar();
+        }
+        if (curMenuItemsEnabled != gameManager.setupMenuItemsEnabled)
+        {
+            ToggleSetupMenuItems();
+        }
+
+        curRadarEnabled = gameManager.setupMenuItemsEnabled;
+        curMenuItemsEnabled = gameManager.radarEnabled;
+
+
+    }
+
+
     public void ToggleRadar()
     {
         playerRadar.SetActive(!playerRadar.activeSelf);
+    }
+    public void ToggleRadar(bool state)
+    {
+        playerRadar.SetActive(state);
     }
 
     public void ToggleSetupMenuItems()

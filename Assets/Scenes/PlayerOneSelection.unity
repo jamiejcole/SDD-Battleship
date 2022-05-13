@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571336, b: 0.3069219, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3608,7 +3608,6 @@ GameObject:
   m_Component:
   - component: {fileID: 584940890}
   - component: {fileID: 584940891}
-  - component: {fileID: 584940893}
   m_Layer: 5
   m_Name: PlayerRadar
   m_TagString: Untagged
@@ -3682,18 +3681,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &584940893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 584940889}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8647df999c2f7054993baaa739b20fa3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &585889027
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10180,6 +10167,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerRadar: {fileID: 584940889}
+  x2u01: {fileID: 0}
+  x3u01: {fileID: 0}
+  x3u02: {fileID: 0}
+  x4u01: {fileID: 0}
+  x5u01: {fileID: 0}
+  confirmMoveButton: {fileID: 0}
+  trashIcon: {fileID: 0}
+  randomPlace: {fileID: 0}
 --- !u!4 &1517367478
 Transform:
   m_ObjectHideFlags: 0
