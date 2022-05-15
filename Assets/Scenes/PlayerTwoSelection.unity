@@ -2305,8 +2305,9 @@ MonoBehaviour:
       isDefault: 0
   messagePopupPrefab: {fileID: 6613432146809576258, guid: 983f6421119023042b188e02fa8f755f, type: 3}
   currentViewer: 
-  playerMenuManager: {fileID: 0}
   componentManager: {fileID: 0}
+  radarEnabled: 0
+  setupMenuItemsEnabled: 1
 --- !u!4 &294157548
 Transform:
   m_ObjectHideFlags: 0
@@ -2356,6 +2357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 879b01e4145504c9a8302bcaa89e744a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
   playerRadar: {fileID: 2039313611}
   x2u01: {fileID: 0}
   x3u01: {fileID: 0}
@@ -9092,7 +9094,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1377654542
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14613,7 +14615,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 230, y: 64.999985}
+  m_AnchoredPosition: {x: 65, y: 65}
   m_SizeDelta: {x: 180, y: 180}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &2039313614
