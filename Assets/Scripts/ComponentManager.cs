@@ -17,6 +17,11 @@ public class ComponentManager : MonoBehaviour
     public GameObject trashIcon;
     public GameObject randomPlace;
 
+    public GameObject CameraRotator;
+    public GameObject p2CameraRotator;
+    public GameObject bombButton;
+
+
     bool curRadarEnabled;
     bool curMenuItemsEnabled;
 
@@ -37,6 +42,7 @@ public class ComponentManager : MonoBehaviour
         confirmMoveButton = GameObject.Find("ConfirmMoveButton");
         trashIcon = GameObject.Find("TrashIcon");
         randomPlace = GameObject.Find("RandomPlace");
+        
     }
 
     public void Update()
@@ -44,7 +50,7 @@ public class ComponentManager : MonoBehaviour
         curRadarEnabled = playerRadar.activeSelf;
         curMenuItemsEnabled = x2u01.activeSelf;
 
-        if (curRadarEnabled != gameManager.radarEnabled)
+        if (curRadarEnabled != gameManager.radarButtonEnabled)
         {
             ToggleRadar();
         }
@@ -54,9 +60,24 @@ public class ComponentManager : MonoBehaviour
         }
 
         curRadarEnabled = gameManager.setupMenuItemsEnabled;
-        curMenuItemsEnabled = gameManager.radarEnabled;
+        curMenuItemsEnabled = gameManager.radarButtonEnabled;
+    }
 
+    public void TriggerBombSelection()
+    {
+        gameManager.BombSelection();
+    }
 
+    public void SwapCams()
+    {
+        bool state = !CameraRotator.activeSelf;
+        CameraRotator.SetActive(state);
+        p2CameraRotator.SetActive(!state);
+        gameManager.inRadarMode = !state;
+        bombButton.SetActive(!state);
+
+        if (gameManager.publicCurrentViewer == "PlayerOne") { gameManager.publicCurrentViewer = "PlayerTwo"; }
+        else if (gameManager.publicCurrentViewer == "PlayerTwo") { gameManager.publicCurrentViewer = "PlayerOne"; }
     }
 
 

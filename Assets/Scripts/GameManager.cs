@@ -68,11 +68,16 @@ public class GameManager : MonoBehaviour
     GameObject[] playerOneObjs;
     GameObject[] playerTwoObjs;
     public string currentViewer;
+    public string publicCurrentViewer;
 
     public ComponentManager componentManager;
+    public SelectionManager selectionManager;
 
-    public bool radarEnabled = false;
+    public bool radarButtonEnabled = false;
     public bool setupMenuItemsEnabled = true;
+
+    public bool inRadarMode = false;
+    public GameObject bombSelectorPref;
 
     // Singleton Implementation of GameManager:
     private static GameManager _instance;
@@ -92,8 +97,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        publicCurrentViewer = "PlayerOne";
         DontDestroyOnLoad(this.gameObject);
         componentManager = GameObject.Find("ComponentManager").GetComponent<ComponentManager>();
+        selectionManager = GameObject.Find("SelectionManager").GetComponent<SelectionManager>();
     }
 
     void OnEnable()
@@ -155,7 +162,7 @@ public class GameManager : MonoBehaviour
 
                 // Changing menu items visiblity
                 setupMenuItemsEnabled = false;
-                radarEnabled = true;
+                radarButtonEnabled = true;
 
                 //componentManager.ToggleSetupMenuItems();
                 //componentManager.ToggleRadar(true);
@@ -167,10 +174,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void BombSelection()
+    {
+        selectionManager = GameObject.Find("SelectionManager").GetComponent<SelectionManager>();
+        Debug.Log($"Triggered BomBSelection... Selection manager is {selectionManager}");
+        GameObject bombSelector = Instantiate(bombSelectorPref, new Vector3(0, 0, 0), Quaternion.identity, GameObject.FindGameObjectWithTag("Canvas").transform);
+        selectionManager.isHighlighting = true;
+        selectionManager.selectedLength = 1;
+        Debug.Log($"ishighlighting: {selectionManager.isHighlighting}, length: {selectionManager.selectedLength}");
+    }
+
     public void SwapVisibility(string currentViewer)
     {        
         if (currentViewer == "PlayerOne")
         {
+            publicCurrentViewer = "PlayerOne";
             foreach (GameObject Obj in playerTwoObjs)
             {
                 Obj.SetActive(false);
@@ -188,6 +206,7 @@ public class GameManager : MonoBehaviour
         }
         else if (currentViewer == "PlayerTwo")
         {
+            publicCurrentViewer = "PlayerTwo";
             foreach (GameObject Obj in playerOneObjs)
             {
                 Obj.SetActive(false);

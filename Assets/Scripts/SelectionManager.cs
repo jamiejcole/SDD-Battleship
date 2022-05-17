@@ -3,16 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SelectionManager : MonoBehaviour
-{
+{  
     // Defining vars, setting default params
     public Material highlightMat;
     public Material defaultMat;
+
+    public Material PlayerOneDefaultMat;
+    public Material PlayerTwoDefaultMat;
+
     public Material redMat;
+
     public List<GameObject> tiles = new List<GameObject>();
+    public List<GameObject> p2tiles = new List<GameObject>();
+
     private GameObject tileParent;
+    private GameObject p2tileParent;
     public int selectedLength = 3;
     public bool isFacingDefault = true;
     public bool isHighlighting = false;
@@ -22,13 +31,21 @@ public class SelectionManager : MonoBehaviour
     public SetupManager setupManager;
     public string currentCursorShip;
 
+    public GameManager gameManager;
+
     private void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         // Appends each tilemap block to the tiles array
         tileParent = GameObject.Find("FloorBlocks");
         foreach (Transform child in tileParent.transform)
         {
             tiles.Add(child.gameObject);
+        }
+        p2tileParent = GameObject.Find("p2FloorBlocks");
+        foreach (Transform child in p2tileParent.transform)
+        {
+            p2tiles.Add(child.gameObject);
         }
     }
 
@@ -47,6 +64,38 @@ public class SelectionManager : MonoBehaviour
     {
         GameObject trash = Instantiate(pref, new Vector3(0, 0, 0), Quaternion.identity, GameObject.FindGameObjectWithTag("Canvas").transform);
 
+    }
+
+    private Material GetDefaultMat()
+    {
+        if (gameManager.publicCurrentViewer == "PlayerOne")
+        {
+            return PlayerOneDefaultMat;
+        }
+        else if (gameManager.publicCurrentViewer == "PlayerTwo")
+        {
+            return PlayerTwoDefaultMat;
+        }
+        else
+        {
+            return defaultMat;
+        }
+    }
+
+    private Material GetDefaultMatInverse()
+    {
+        if (gameManager.publicCurrentViewer == "PlayerOne")
+        {
+            return PlayerTwoDefaultMat;
+        }
+        else if (gameManager.publicCurrentViewer == "PlayerTwo")
+        {
+            return PlayerOneDefaultMat;
+        }
+        else
+        {
+            return defaultMat;
+        }
     }
 
     void Update()
@@ -71,7 +120,7 @@ public class SelectionManager : MonoBehaviour
                         swapTiles(previousHit, selectedLength, false);
                         for (int i = 0; i < redTiles.Count; i++)
                         {
-                            redTiles[i].GetComponent<MeshRenderer>().material = defaultMat;
+                            redTiles[i].GetComponent<MeshRenderer>().material = GetDefaultMat();
                         }
                     }
 
@@ -91,8 +140,10 @@ public class SelectionManager : MonoBehaviour
     {
         try
         {
+            List<GameObject> tilesToUse = GetListToUse();
+
             Material mat;
-            if (isHighlighted) { mat = highlightMat; } else { mat = defaultMat; }
+            if (isHighlighted) { mat = highlightMat; } else { mat = GetDefaultMat(); }
             string preFormat = Hit.Remove(Hit.Length - 1);
             preFormat = preFormat.Substring(Hit.Length - 3);
             int hitNumber = Int32.Parse(preFormat);
@@ -107,14 +158,14 @@ public class SelectionManager : MonoBehaviour
                 {
                     for (int i = 0; i < Length; i++)
                     {
-                        tiles[hitNumber + i].GetComponent<MeshRenderer>().material = mat;
+                        tilesToUse[hitNumber + i].GetComponent<MeshRenderer>().material = mat;
                     }
                 }
                 else if (!isFacingDefault)
                 {
                     for (int i = 0; i < Length; i++)
                     {
-                        tiles[hitNumber - i*10].GetComponent<MeshRenderer>().material = mat;
+                        tilesToUse[hitNumber - i*10].GetComponent<MeshRenderer>().material = mat;
                     }
                 }
             }
@@ -128,8 +179,8 @@ public class SelectionManager : MonoBehaviour
                     int rounded = (int)Math.Round((hitNumber - 4.5f) / 10.0) * 10;
                     for (int i = 0; i < 10; i++)
                     {
-                        tiles[rounded + i].GetComponent<MeshRenderer>().material = redMat;
-                        redTiles.Add(tiles[rounded + i]);
+                        tilesToUse[rounded + i].GetComponent<MeshRenderer>().material = redMat;
+                        redTiles.Add(tilesToUse[rounded + i]);
                     }
                 }
                 else if (!isFacingDefault)
@@ -140,12 +191,12 @@ public class SelectionManager : MonoBehaviour
                     {
                         int intSmall = Int32.Parse(small);
                         int next = intSmall + (i) * 10;
-                        tiles[next].GetComponent<MeshRenderer>().material = redMat;
-                        redTiles.Add(tiles[next]);
+                        tilesToUse[next].GetComponent<MeshRenderer>().material = redMat;
+                        redTiles.Add(tilesToUse[next]);
                         if (next == 90) 
                         {
-                            tiles[next + 10].GetComponent<MeshRenderer>().material = redMat;
-                            redTiles.Add(tiles[next + 10]);
+                            tilesToUse[next + 10].GetComponent<MeshRenderer>().material = redMat;
+                            redTiles.Add(tilesToUse[next + 10]);
                         }
                     }
                 }
@@ -158,16 +209,106 @@ public class SelectionManager : MonoBehaviour
 
     public void cleanTiles()
     {
-        foreach (GameObject obj in tiles)
+        if (gameManager.publicCurrentViewer == "PlayerOne" && SceneManager.GetActiveScene().name == "PlayerOneSelection")
         {
-            obj.GetComponent<MeshRenderer>().material = defaultMat;
+            foreach (GameObject obj in tiles)
+            {
+                obj.GetComponent<MeshRenderer>().material = PlayerOneDefaultMat;
+            }
+            foreach (GameObject obj in p2tiles)
+            {
+                obj.GetComponent<MeshRenderer>().material = PlayerTwoDefaultMat;
+            }
         }
+        else if (gameManager.publicCurrentViewer == "PlayerTwo" && SceneManager.GetActiveScene().name == "PlayerOneSelection")
+        {
+            foreach (GameObject obj in tiles)
+            {
+                obj.GetComponent<MeshRenderer>().material = PlayerOneDefaultMat;
+            }
+            foreach (GameObject obj in p2tiles)
+            {
+                obj.GetComponent<MeshRenderer>().material = PlayerTwoDefaultMat;
+            }
+        }
+        else if (gameManager.publicCurrentViewer == "PlayerTwo" && SceneManager.GetActiveScene().name == "PlayerTwoSelection")
+        {
+            foreach (GameObject obj in tiles)
+            {
+                obj.GetComponent<MeshRenderer>().material = PlayerTwoDefaultMat;
+            }
+            foreach (GameObject obj in p2tiles)
+            {
+                obj.GetComponent<MeshRenderer>().material = PlayerOneDefaultMat;
+            }
+        }
+        else if (gameManager.publicCurrentViewer == "PlayerOne" && SceneManager.GetActiveScene().name == "PlayerTwoSelection")
+        {
+            foreach (GameObject obj in tiles)
+            {
+                obj.GetComponent<MeshRenderer>().material = PlayerTwoDefaultMat;
+            }
+            foreach (GameObject obj in p2tiles)
+            {
+                obj.GetComponent<MeshRenderer>().material = PlayerOneDefaultMat;
+            }
+        }
+        
     }
 
 
     public bool mouseDownOnHighlight()
     {
-        return setupManager.CreateShip(GameObject.Find(MakeCast()), currentCursorShip);
+        string parent = GetParentOfBlocks();
+
+        return setupManager.CreateShip(GameObject.Find($"{parent}/{MakeCast()}"), currentCursorShip);
+    }
+
+    private string GetParentOfBlocks()
+    {
+        string parent;
+        if (gameManager.publicCurrentViewer == "PlayerOne" && SceneManager.GetActiveScene().name == "PlayerOneSelection")
+        {
+            parent = "FloorBlocks";
+        }
+        else if (gameManager.publicCurrentViewer == "PlayerTwo" && SceneManager.GetActiveScene().name == "PlayerOneSelection")
+        {
+            parent = "p2FloorBlocks";
+        }
+        else if (gameManager.publicCurrentViewer == "PlayerTwo" && SceneManager.GetActiveScene().name == "PlayerTwoSelection")
+        {
+            parent = "FloorBlocks";
+        }
+        else if (gameManager.publicCurrentViewer == "PlayerOne" && SceneManager.GetActiveScene().name == "PlayerTwoSelection")
+        {
+            parent = "p2FloorBlocks";
+        }
+        else { parent = "FloorBlocks"; }
+        return parent;
+    }
+
+    private List<GameObject> GetListToUse()
+    {
+        List<GameObject> tilesToUse;
+        // we want to determine which tileset to use
+        if (gameManager.publicCurrentViewer == "PlayerOne" && SceneManager.GetActiveScene().name == "PlayerOneSelection")
+        {
+            tilesToUse = tiles;
+        }
+        else if (gameManager.publicCurrentViewer == "PlayerTwo" && SceneManager.GetActiveScene().name == "PlayerOneSelection")
+        {
+            tilesToUse = p2tiles;
+        }
+        else if (gameManager.publicCurrentViewer == "PlayerTwo" && SceneManager.GetActiveScene().name == "PlayerTwoSelection")
+        {
+            tilesToUse = tiles;
+        }
+        else if (gameManager.publicCurrentViewer == "PlayerOne" && SceneManager.GetActiveScene().name == "PlayerTwoSelection")
+        {
+            tilesToUse = p2tiles;
+        }
+        else { tilesToUse = tiles; }
+        return tilesToUse;
     }
 
     public string MakeCast()
@@ -192,6 +333,6 @@ public class SelectionManager : MonoBehaviour
     {
         obj.GetComponent<MeshRenderer>().material = highlightMat;
         yield return new WaitForSeconds(0.1f);
-        obj.GetComponent<MeshRenderer>().material = defaultMat;
+        obj.GetComponent<MeshRenderer>().material = GetDefaultMat();
     }
 }
