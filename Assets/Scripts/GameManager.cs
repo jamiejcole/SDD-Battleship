@@ -157,8 +157,9 @@ public class GameManager : MonoBehaviour
                 CreatePopup("Player Positions saved! Loading Game...");
                 playerTwoObjs = GameObject.FindGameObjectsWithTag("PlayerTwoVisible");
                 StartCoroutine(LoadSceneAfterSeconds("PlayerOneSelection", 1f));
-                SwapVisibility("PlayerOne");
+                StartCoroutine(SwapVisibilityAfterSeconds("PlayerOne", 1f));
 
+                // TODO: Need to fix the issue with ships being disclosed before switching scenes.
 
                 // Changing menu items visiblity
                 setupMenuItemsEnabled = false;
@@ -177,11 +178,9 @@ public class GameManager : MonoBehaviour
     public void BombSelection()
     {
         selectionManager = GameObject.Find("SelectionManager").GetComponent<SelectionManager>();
-        Debug.Log($"Triggered BomBSelection... Selection manager is {selectionManager}");
         GameObject bombSelector = Instantiate(bombSelectorPref, new Vector3(0, 0, 0), Quaternion.identity, GameObject.FindGameObjectWithTag("Canvas").transform);
         selectionManager.isHighlighting = true;
         selectionManager.selectedLength = 1;
-        Debug.Log($"ishighlighting: {selectionManager.isHighlighting}, length: {selectionManager.selectedLength}");
     }
 
     public void SwapVisibility(string currentViewer)
@@ -224,6 +223,12 @@ public class GameManager : MonoBehaviour
             }
             
         }
+    }
+
+    IEnumerator SwapVisibilityAfterSeconds(string str, float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        SwapVisibility(str);
     }
 
     public IEnumerator DeleteObjectAfterSeconds(GameObject obj, float seconds)

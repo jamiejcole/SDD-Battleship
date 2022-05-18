@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -26,7 +27,8 @@ public class TrashCursor : MonoBehaviour
         // whole thing is dodgy, errors when deleting obj, all ships remain highlighted
         // could try using list instead of array
 
-        gameObjs = GameObject.FindGameObjectsWithTag("Ship");
+        //gameObjs = GameObject.FindGameObjectsWithTag("Ship");
+        gameObjs = FindGameObjectsWithTags(new string[] { "PlayerOneVisible", "PlayerTwoVisible" });
 
         flushHighlight();
         transform.position = Input.mousePosition;
@@ -79,6 +81,18 @@ public class TrashCursor : MonoBehaviour
             flushHighlight();
             Destroy(gameObject);
         }
+    }
+
+    GameObject[] FindGameObjectsWithTags(params string[] tags)
+    {
+        var all = new List<GameObject>();
+
+        foreach (string tag in tags)
+        {
+            all.AddRange(GameObject.FindGameObjectsWithTag(tag).ToList());
+        }
+
+        return all.ToArray();
     }
 
     private void flushHighlight()
