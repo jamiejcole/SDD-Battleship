@@ -11,12 +11,16 @@ public class BindToCursor : MonoBehaviour
     // cursor each frame.
 
     SelectionManager selectionManager;
+    GameManager gameManager;
+
     Button actualButton;
 
     // Assigning types
     private void Start()
     {
         selectionManager = GameObject.Find("SelectionManager").GetComponent<SelectionManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         selectionManager.isHighlighting = true;
 
         GameObject buttonObj = EventSystem.current.currentSelectedGameObject;
@@ -31,12 +35,30 @@ public class BindToCursor : MonoBehaviour
         // If the user clicks the left mouse button
         if (Input.GetMouseButton(0))
         {
-            bool legal = selectionManager.mouseDownOnHighlight();
-            if (legal) { 
-                selectionManager.isHighlighting = false;
-                selectionManager.cleanTiles();
-                //actualButton.interactable = false;
-                Destroy(gameObject);
+            if (gameObject.name == "BombSelector(Clone)")
+            {
+                string hitName = selectionManager.MakeCast();
+                if (hitName != "false")
+                {
+                    // instantiate missile object at y20 above the tile
+                    gameManager.LaunchMissile(gameManager.GetTileNumFromName(hitName));
+
+                    selectionManager.isHighlighting = false;
+                    selectionManager.cleanTiles();
+
+                    Destroy(gameObject);
+                }
+            }
+            else
+            {
+                bool legal = selectionManager.mouseDownOnHighlight();
+                if (legal)
+                {
+                    selectionManager.isHighlighting = false;
+                    selectionManager.cleanTiles();
+                    //actualButton.interactable = false;
+                    Destroy(gameObject);
+                }
             }
         }
 

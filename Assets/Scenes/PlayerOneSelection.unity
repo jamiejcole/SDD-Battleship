@@ -4345,6 +4345,7 @@ MonoBehaviour:
       Length: 0
       isDefault: 0
   messagePopupPrefab: {fileID: 6613432146809576258, guid: 983f6421119023042b188e02fa8f755f, type: 3}
+  missileObjPrefab: {fileID: 1172052589271340635, guid: a9d7c75a29dc34ddca9e85539b5e93ca, type: 3}
   currentViewer: 
   publicCurrentViewer: 
   componentManager: {fileID: 0}

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Reflection;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -64,6 +66,7 @@ public class GameManager : MonoBehaviour
     public Player playerTwo;
 
     public GameObject messagePopupPrefab;
+    public GameObject missileObjPrefab;
 
     GameObject[] playerOneObjs;
     GameObject[] playerTwoObjs;
@@ -175,12 +178,49 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void LaunchMissile(int tileNum)
+    {
+        // instantiate the missile obj
+        Vector3 tilePos = selectionManager.p2tiles[tileNum].transform.position;
+        Vector3 missileSpawnPos = new Vector3(tilePos.x + 0.5f, tilePos.y + 13, tilePos.z + 0.5f);
+        GameObject missileObj = GameObject.Instantiate(missileObjPrefab, missileSpawnPos, Quaternion.identity);
+
+        // delete object after 2.5s
+        DeleteObjectAfterSeconds(missileObj, 2.5f);
+
+        // determine whether it's a hit or miss
+        // if it's hit, make a red cross. if it's miss, black circle or smth
+        string currentPlayer = GetCurrentPlayer();
+        if (currentPlayer == "PlayerOne")
+        {
+            // loop thru the ships and see if any tile is occupied
+        }
+
+        // handle some logic for updating the player object for the hit 
+    }
+
     public void BombSelection()
     {
         selectionManager = GameObject.Find("SelectionManager").GetComponent<SelectionManager>();
         GameObject bombSelector = Instantiate(bombSelectorPref, new Vector3(0, 0, 0), Quaternion.identity, GameObject.FindGameObjectWithTag("Canvas").transform);
         selectionManager.isHighlighting = true;
         selectionManager.selectedLength = 1;
+    }
+
+    public string GetCurrentPlayer()
+    {
+        if (SceneManager.GetActiveScene().name == "PlayerOneSelection")
+        {
+            return "PlayerOne";
+        }
+        else if (SceneManager.GetActiveScene().name == "PlayerTwoSelection")
+        {
+            return "PlayerTwo";
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public void SwapVisibility(string currentViewer)
@@ -275,5 +315,12 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"KVP: {x.Key}, {x.Value}");
         }
+    }
+
+    public int GetTileNumFromName(string unmodif)
+    {
+        string modifString = unmodif.Substring(unmodif.Length - 3, 2);
+        int modifInt = Int32.Parse(modifString);
+        return modifInt;
     }
 }
