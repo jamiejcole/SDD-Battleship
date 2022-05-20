@@ -194,6 +194,7 @@ public class GameManager : MonoBehaviour
         if (currentPlayer == "PlayerOne")
         {
             // loop thru the ships and see if any tile is occupied
+            
         }
 
         // handle some logic for updating the player object for the hit 
