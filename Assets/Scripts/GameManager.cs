@@ -67,6 +67,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject messagePopupPrefab;
     public GameObject missileObjPrefab;
+    public GameObject hitPrefab;
+    public GameObject missPrefab;
 
     GameObject[] playerOneObjs;
     GameObject[] playerTwoObjs;
@@ -185,74 +187,74 @@ public class GameManager : MonoBehaviour
         Vector3 missileSpawnPos = new Vector3(tilePos.x + 0.5f, tilePos.y + 13, tilePos.z + 0.5f);
         GameObject missileObj = GameObject.Instantiate(missileObjPrefab, missileSpawnPos, Quaternion.identity);
 
-        // delete object after 2.5s
-        DeleteObjectAfterSeconds(missileObj, 2.5f);
+        StartCoroutine(DeleteObjectAfterSeconds(missileObj, 2f));
 
         // determine whether it's a hit or miss
         // if it's hit, make a red cross. if it's miss, black circle or smth
         string currentPlayer = GetCurrentPlayer();
         if (currentPlayer == "PlayerOne")
         {
-            // loop thru the ships and see if any tile is occupied
-            foreach (FieldInfo prop in playerOne.GetType().GetFields())
+            bool hit = false;
+
+            // Loop through each ship in playerTwo Object, and then loop through each occupied 
+            // tile within each Ship object to see if the tile matches the tileNum of the missile
+            foreach (FieldInfo prop in playerTwo.GetType().GetFields())
             {
                 string shipName = prop.Name;
 
-                foreach (int x in GetOccupiedTiles("PlayerOne", shipName))
+                foreach (int x in GetOccupiedTiles(playerTwo, shipName))
                 {
                     if (x == tileNum)
                     {
-                        Debug.Log($"Hit! {shipName} at {tileNum}. x={x}");
+                        hit = true;
                     }
                 }
+            }
+
+            // Spawns the hit or miss prefab at the tile position
+            Vector3 hitSpawnPos = new Vector3(tilePos.x + 0.5f, tilePos.y + 1f, tilePos.z + 0.5f);
+            if (hit)
+            {
+                StartCoroutine(InstantiateAfterSeconds(hitPrefab, hitSpawnPos, Quaternion.identity, 1.6f));
+            }
+            else
+            {
+                StartCoroutine(InstantiateAfterSeconds(missPrefab, hitSpawnPos, Quaternion.identity, 1.6f));
             }
         }
 
         // handle some logic for updating the player object for the hit 
     }
 
-    private List<int> GetOccupiedTiles(string player, string shipName)
+    private void UpdateHitDict(Player player, int tileNum)
+    {
+        
+    }
+
+    private List<int> GetOccupiedTiles(Player player, string shipName)
     {
         List<int> occupiedTiles = new List<int>();
-        if (player == "PlayerOne")
+
+        List<Ship> playerShips = new List<Ship>();
+        Ship[] playerInput = {
+            player.Ship_2_01, player.Ship_3_01, player.Ship_3_02, player.Ship_4_01, player.Ship_5_01
+        };
+        playerShips.AddRange(new List<Ship>(playerInput));
+
+        foreach (Ship ship in playerShips)
         {
-            if (shipName == "Ship_2_01")
+            foreach (KeyValuePair<int, bool> x in ship.hitDict)
             {
-                foreach (KeyValuePair<int, bool> x in playerOne.Ship_2_01.hitDict)
-                {
-                    occupiedTiles.Add(x.Key);
-                }
-            }
-            else if (shipName == "Ship_3_01")
-            {
-                foreach (KeyValuePair<int, bool> x in playerOne.Ship_3_01.hitDict)
-                {
-                    occupiedTiles.Add(x.Key);
-                }
-            }
-            else if (shipName == "Ship_3_02")
-            {
-                foreach (KeyValuePair<int, bool> x in playerOne.Ship_3_02.hitDict)
-                {
-                    occupiedTiles.Add(x.Key);
-                }
-            }
-            else if (shipName == "Ship_4_01")
-            {
-                foreach (KeyValuePair<int, bool> x in playerOne.Ship_4_01.hitDict)
-                {
-                    occupiedTiles.Add(x.Key);
-                }
-            }
-            else if (shipName == "Ship_5_01")
-            {
-                foreach (KeyValuePair<int, bool> x in playerOne.Ship_5_01.hitDict)
-                {
-                    occupiedTiles.Add(x.Key);
-                }
+                occupiedTiles.Add(x.Key);
             }
         }
         return occupiedTiles;
+    }
+
+    IEnumerator InstantiateAfterSeconds(GameObject prefab, Vector3 origin, Quaternion quat, float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        GameObject spawnObject = Instantiate(prefab, origin, quat);
     }
 
     public void BombSelection()
