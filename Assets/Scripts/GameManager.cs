@@ -194,10 +194,65 @@ public class GameManager : MonoBehaviour
         if (currentPlayer == "PlayerOne")
         {
             // loop thru the ships and see if any tile is occupied
-            
+            foreach (FieldInfo prop in playerOne.GetType().GetFields())
+            {
+                string shipName = prop.Name;
+
+                foreach (int x in GetOccupiedTiles("PlayerOne", shipName))
+                {
+                    if (x == tileNum)
+                    {
+                        Debug.Log($"Hit! {shipName} at {tileNum}. x={x}");
+                    }
+                }
+            }
         }
 
         // handle some logic for updating the player object for the hit 
+    }
+
+    private List<int> GetOccupiedTiles(string player, string shipName)
+    {
+        List<int> occupiedTiles = new List<int>();
+        if (player == "PlayerOne")
+        {
+            if (shipName == "Ship_2_01")
+            {
+                foreach (KeyValuePair<int, bool> x in playerOne.Ship_2_01.hitDict)
+                {
+                    occupiedTiles.Add(x.Key);
+                }
+            }
+            else if (shipName == "Ship_3_01")
+            {
+                foreach (KeyValuePair<int, bool> x in playerOne.Ship_3_01.hitDict)
+                {
+                    occupiedTiles.Add(x.Key);
+                }
+            }
+            else if (shipName == "Ship_3_02")
+            {
+                foreach (KeyValuePair<int, bool> x in playerOne.Ship_3_02.hitDict)
+                {
+                    occupiedTiles.Add(x.Key);
+                }
+            }
+            else if (shipName == "Ship_4_01")
+            {
+                foreach (KeyValuePair<int, bool> x in playerOne.Ship_4_01.hitDict)
+                {
+                    occupiedTiles.Add(x.Key);
+                }
+            }
+            else if (shipName == "Ship_5_01")
+            {
+                foreach (KeyValuePair<int, bool> x in playerOne.Ship_5_01.hitDict)
+                {
+                    occupiedTiles.Add(x.Key);
+                }
+            }
+        }
+        return occupiedTiles;
     }
 
     public void BombSelection()
