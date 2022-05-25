@@ -90,6 +90,8 @@ public class ComponentManager : MonoBehaviour
         playerRadar.SetActive(state);
     }
 
+
+    // Example of overloading-
     public void ToggleSetupMenuItems()
     {
         bool state = !x2u01.activeSelf;
