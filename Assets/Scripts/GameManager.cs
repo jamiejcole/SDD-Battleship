@@ -84,6 +84,9 @@ public class GameManager : MonoBehaviour
     public bool inRadarMode = false;
     public GameObject bombSelectorPref;
 
+    GameObject[] playerOneShotObjects;
+    GameObject[] playerTwoShotObjects;
+
     // Singleton Implementation of GameManager:
     private static GameManager _instance;
     public static GameManager Instance { get { return _instance; } }
@@ -216,6 +219,8 @@ public class GameManager : MonoBehaviour
             if (hit)
             {
                 StartCoroutine(InstantiateAfterSeconds(hitPrefab, hitSpawnPos, Quaternion.identity, 1.6f));
+                UpdateHitDict(playerTwo, tileNum);
+                //AddShotObjectToList() // uhh idk something liek this 
             }
             else
             {
@@ -228,7 +233,24 @@ public class GameManager : MonoBehaviour
 
     private void UpdateHitDict(Player player, int tileNum)
     {
-        
+        List<Ship> playerShips = new List<Ship>();
+        Ship[] playerInput = {
+            player.Ship_2_01, player.Ship_3_01, player.Ship_3_02, player.Ship_4_01, player.Ship_5_01
+        };
+        playerShips.AddRange(new List<Ship>(playerInput));
+
+        foreach (Ship ship in playerShips)
+        {
+            foreach (KeyValuePair<int, bool> x in ship.hitDict)
+            {
+                if (x.Key == tileNum)
+                {
+                    ship.hitDict[tileNum] = true;
+                    //Debug.Log($"Hit dict updated. {tileNum} is now true!");
+                    return;
+                }
+            }
+        }
     }
 
     private List<int> GetOccupiedTiles(Player player, string shipName)
@@ -249,6 +271,11 @@ public class GameManager : MonoBehaviour
             }
         }
         return occupiedTiles;
+    }
+
+    private void PlaceShotsOnTilemapOnLoad(string player)
+    {
+
     }
 
     IEnumerator InstantiateAfterSeconds(GameObject prefab, Vector3 origin, Quaternion quat, float seconds)
