@@ -84,8 +84,8 @@ public class GameManager : MonoBehaviour
     public bool inRadarMode = false;
     public GameObject bombSelectorPref;
 
-    GameObject[] playerOneShotObjects;
-    GameObject[] playerTwoShotObjects;
+    List<GameObject> playerOneShotObjects = new List<GameObject>();
+    List<GameObject> playerTwoShotObjects = new List<GameObject>();
 
     // Singleton Implementation of GameManager:
     private static GameManager _instance;
@@ -218,17 +218,33 @@ public class GameManager : MonoBehaviour
             Vector3 hitSpawnPos = new Vector3(tilePos.x + 0.5f, tilePos.y + 1f, tilePos.z + 0.5f);
             if (hit)
             {
-                StartCoroutine(InstantiateAfterSeconds(hitPrefab, hitSpawnPos, Quaternion.identity, 1.6f));
+                StartCoroutine(InstantiateAfterSeconds(hitPrefab, hitSpawnPos, Quaternion.identity, 1.6f, "playerTwo"));
                 UpdateHitDict(playerTwo, tileNum);
-                //AddShotObjectToList() // uhh idk something liek this 
+                foreach (var x in playerTwoShotObjects)
+                {
+                    Debug.Log(x.ToString());
+                }
+
             }
             else
             {
-                StartCoroutine(InstantiateAfterSeconds(missPrefab, hitSpawnPos, Quaternion.identity, 1.6f));
+                StartCoroutine(InstantiateAfterSeconds(missPrefab, hitSpawnPos, Quaternion.identity, 1.6f, "playerTwo"));
             }
         }
 
         // handle some logic for updating the player object for the hit 
+    }
+
+    private void UpdateShotObjectDict(string player, GameObject item)
+    {
+        if (player == "playerOne")
+        {
+            playerOneShotObjects.Add(item);
+        }
+        else if (player == "playerTwo")
+        {
+            playerTwoShotObjects.Add(item);
+        }
     }
 
     private void UpdateHitDict(Player player, int tileNum)
@@ -278,10 +294,11 @@ public class GameManager : MonoBehaviour
 
     }
 
-    IEnumerator InstantiateAfterSeconds(GameObject prefab, Vector3 origin, Quaternion quat, float seconds)
+    IEnumerator InstantiateAfterSeconds(GameObject prefab, Vector3 origin, Quaternion quat, float seconds, string player)
     {
         yield return new WaitForSeconds(seconds);
         GameObject spawnObject = Instantiate(prefab, origin, quat);
+        UpdateShotObjectDict(player, spawnObject);
     }
 
     public void BombSelection()
