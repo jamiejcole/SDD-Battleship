@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class ComponentManager : MonoBehaviour
 {
     public GameManager gameManager;
 
     public GameObject playerRadar;
+    public GameObject nextPlayerButton;
 
     public GameObject x2u01;
     public GameObject x3u01;
@@ -32,7 +35,10 @@ public class ComponentManager : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         playerRadar = GameObject.Find("PlayerRadar");
-        ToggleRadar();
+        nextPlayerButton = GameObject.Find("NextPlayerButton");
+        ToggleRadarItems();
+
+        ToggleItem(nextPlayerButton);
 
         x2u01 = GameObject.Find("2U 01");
         x3u01 = GameObject.Find("3U 01");
@@ -52,7 +58,7 @@ public class ComponentManager : MonoBehaviour
 
         if (curRadarEnabled != gameManager.radarButtonEnabled)
         {
-            ToggleRadar();
+            ToggleRadarItems();
         }
         if (curMenuItemsEnabled != gameManager.setupMenuItemsEnabled)
         {
@@ -75,19 +81,47 @@ public class ComponentManager : MonoBehaviour
         p2CameraRotator.SetActive(!state);
         gameManager.inRadarMode = !state;
         bombButton.SetActive(!state);
+        nextPlayerButton.SetActive(!state);
 
         if (gameManager.publicCurrentViewer == "PlayerOne") { gameManager.publicCurrentViewer = "PlayerTwo"; }
         else if (gameManager.publicCurrentViewer == "PlayerTwo") { gameManager.publicCurrentViewer = "PlayerOne"; }
     }
 
+    private void ToggleItem(GameObject obj)
+    {
+        bool state = !obj.activeSelf;
+        obj.SetActive(state);
+    }
 
-    public void ToggleRadar()
+    public void ToggleButtonInteractable(GameObject obj)
+    {
+        Button actualButton = obj.GetComponent<Button>();
+        if (obj.GetComponent<Button>().interactable == true)
+        {
+            actualButton.interactable = false;
+        }
+        else
+        {
+            actualButton.interactable = true;
+        }
+        
+    }
+
+    public void ToggleButtonInteractable(GameObject obj, bool state)
+    {
+        Button actualButton = obj.GetComponent<Button>();
+        actualButton.interactable = state;
+    }
+
+
+
+    public void ToggleRadarItems()
     {
         playerRadar.SetActive(!playerRadar.activeSelf);
     }
-    public void ToggleRadar(bool state)
+    public void ToggleRadarItems(bool state)
     {
-        playerRadar.SetActive(state);
+        nextPlayerButton.SetActive(state);
     }
 
 

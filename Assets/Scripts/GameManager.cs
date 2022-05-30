@@ -87,6 +87,12 @@ public class GameManager : MonoBehaviour
     List<GameObject> playerOneShotObjects = new List<GameObject>();
     List<GameObject> playerTwoShotObjects = new List<GameObject>();
 
+    public GameObject whiteObjectPrefab;
+    List<GameObject> playerOneWhiteObjects = new List<GameObject>();
+    List<GameObject> playerTwoWhiteObjects = new List<GameObject>();
+
+
+
     // Singleton Implementation of GameManager:
     private static GameManager _instance;
     public static GameManager Instance { get { return _instance; } }
@@ -216,34 +222,58 @@ public class GameManager : MonoBehaviour
 
             // Spawns the hit or miss prefab at the tile position
             Vector3 hitSpawnPos = new Vector3(tilePos.x + 0.5f, tilePos.y + 1f, tilePos.z + 0.5f);
+
+            // Toggling UI components
+            componentManager.ToggleButtonInteractable(componentManager.nextPlayerButton);
+            componentManager.ToggleButtonInteractable(componentManager.bombButton);
+
             if (hit)
             {
                 StartCoroutine(InstantiateAfterSeconds(hitPrefab, hitSpawnPos, Quaternion.identity, 1.6f, "playerTwo"));
                 UpdateHitDict(playerTwo, tileNum);
-                foreach (var x in playerTwoShotObjects)
-                {
-                    Debug.Log(x.ToString());
-                }
+                StartCoroutine(CreatePopupAfterSeconds("Hit!", 1.6f));
 
+                // white object logic
+                CreateWhiteObject("playerTwo", tileNum);
             }
             else
             {
                 StartCoroutine(InstantiateAfterSeconds(missPrefab, hitSpawnPos, Quaternion.identity, 1.6f, "playerTwo"));
+                StartCoroutine(CreatePopupAfterSeconds("Miss!", 1.6f));
             }
         }
 
         // handle some logic for updating the player object for the hit 
     }
 
+    private void CreateWhiteObject(string player, int tileNum)
+    {
+        // tileNum of corresponding thing in actual tilemap
+        Vector3 tilePosition = selectionManager.tiles[tileNum].transform.position;
+        Vector3 spawnPosition = new Vector3(tilePosition.x + 0.5f, tilePosition.y + 1.25f, tilePosition.z + 0.5f);
+        GameObject obj = Instantiate(whiteObjectPrefab, spawnPosition, Quaternion.identity);
+        if (player == "playerOne") { 
+            playerOneWhiteObjects.Add(obj);
+            obj.tag = "PlayerOneVisible";
+        }
+        else if (player == "playerTwo") { 
+            playerTwoWhiteObjects.Add(obj);
+            obj.tag = "PlayerTwoVisible";
+        }
+        obj.SetActive(false);
+        
+    }
+ 
     private void UpdateShotObjectDict(string player, GameObject item)
     {
+        
         if (player == "playerOne")
         {
-            playerOneShotObjects.Add(item);
+            playerTwoShotObjects.Add(item);
         }
         else if (player == "playerTwo")
         {
-            playerTwoShotObjects.Add(item);
+            playerOneShotObjects.Add(item);
         }
     }
 
@@ -294,10 +324,18 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void NextButton()
+    {
+        // instnatiate white golwy thing prefab (check ipad)
+
+    }
+
     IEnumerator InstantiateAfterSeconds(GameObject prefab, Vector3 origin, Quaternion quat, float seconds, string player)
     {
         yield return new WaitForSeconds(seconds);
         GameObject spawnObject = Instantiate(prefab, origin, quat);
+        if (player == "playerOne") { spawnObject.tag = "PlayerTwoVisible"; }
+        else if (player == "playerTwo") { spawnObject.tag = "PlayerOneVisible"; }
         UpdateShotObjectDict(player, spawnObject);
     }
 
@@ -334,9 +372,25 @@ public class GameManager : MonoBehaviour
             {
                 Obj.SetActive(false);
             }
+            foreach (GameObject Obj in playerTwoShotObjects)
+            {
+                Obj.SetActive(false);
+            }
+            foreach (GameObject Obj in playerTwoWhiteObjects)
+            {
+                Obj.SetActive(false);
+            }
             try
             {
                 foreach (GameObject Obj in playerOneObjs)
+                {
+                    Obj.SetActive(true);
+                }
+                foreach (GameObject Obj in playerOneShotObjects)
+                {
+                    Obj.SetActive(true);
+                }
+                foreach (GameObject Obj in playerOneWhiteObjects)
                 {
                     Obj.SetActive(true);
                 }
@@ -352,13 +406,30 @@ public class GameManager : MonoBehaviour
             {
                 Obj.SetActive(false);
             }
+            foreach (GameObject Obj in playerOneShotObjects)
+            {
+                Obj.SetActive(false);
+            }
+            foreach (GameObject Obj in playerOneWhiteObjects)
+            {
+                Obj.SetActive(false);
+            }
             try
             {
                 foreach (GameObject Obj in playerTwoObjs)
                 {
                     Obj.SetActive(true);
                 }
+                foreach (GameObject Obj in playerTwoShotObjects)
+                {
+                    Obj.SetActive(true);
+                }
+                foreach (GameObject Obj in playerTwoWhiteObjects)
+                {
+                    Obj.SetActive(true);
+                }
             }
+
             catch
             {
                 // Do nothing
@@ -385,8 +456,16 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(scene);
     }
 
-    public void CreatePopup(string text)
+    public void CreatePopup(string text, float deleteSeconds = 3f)
     {
+        GameObject popup = Instantiate(messagePopupPrefab, GameObject.Find("Canvas").transform);
+        popup.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = text;
+        StartCoroutine(DeleteObjectAfterSeconds(popup, deleteSeconds));
+    }
+
+    IEnumerator CreatePopupAfterSeconds(string text, float seconds = 0f)
+    {
+        yield return new WaitForSeconds(seconds);
         GameObject popup = Instantiate(messagePopupPrefab, GameObject.Find("Canvas").transform);
         popup.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = text;
         StartCoroutine(DeleteObjectAfterSeconds(popup, 3f));

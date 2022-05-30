@@ -43,5 +43,18 @@ public class ManualCameraRotator : MonoBehaviour
             selectionManager.cleanTiles();
             prevIsFacingDefault = selectionManager.isFacingDefault;
         }
+
+        // Rotates with r key
+        if (Input.GetKeyDown("r"))
+        {
+            if (!selectionManager.isFacingDefault)
+            {
+                transform.Rotate(0, -yRotation, 0);
+            }
+            else
+            {
+                transform.Rotate(0, (90f-yRotation), 0);
+            }
+        }
     }
 }
