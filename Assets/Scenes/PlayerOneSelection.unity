@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571336, b: 0.3069219, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -730,7 +730,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 33756374}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1517367477}
+        m_TargetAssemblyTypeName: ComponentManager, Assembly-CSharp
+        m_MethodName: CallNextButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &33756376
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4493,6 +4505,7 @@ MonoBehaviour:
   inRadarMode: 0
   bombSelectorPref: {fileID: 8138832731377087283, guid: 7215568e4d984489eafcf4c0f28d5f4b, type: 3}
   whiteObjectPrefab: {fileID: 8656581626520565710, guid: 770fd468ea820e545b95bbcf2a03bd20, type: 3}
+  greyedOutMaterial: {fileID: 2100000, guid: ec7fdf134f41d48a998ba917392b1d3c, type: 2}
 --- !u!4 &294157548
 Transform:
   m_ObjectHideFlags: 0

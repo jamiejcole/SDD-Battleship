@@ -74,6 +74,11 @@ public class ComponentManager : MonoBehaviour
         gameManager.BombSelection();
     }
 
+    public void CallNextButton()
+    {
+        gameManager.NextButton();
+    }
+
     public void SwapCams()
     {
         bool state = !CameraRotator.activeSelf;

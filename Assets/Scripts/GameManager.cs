@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviour
     List<GameObject> playerOneWhiteObjects = new List<GameObject>();
     List<GameObject> playerTwoWhiteObjects = new List<GameObject>();
 
+    public Material greyedOutMaterial;
 
 
     // Singleton Implementation of GameManager:
@@ -198,52 +199,117 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(DeleteObjectAfterSeconds(missileObj, 2f));
 
-        // determine whether it's a hit or miss
-        // if it's hit, make a red cross. if it's miss, black circle or smth
+        // Determine whether it's a hit or miss
         string currentPlayer = GetCurrentPlayer();
-        if (currentPlayer == "PlayerOne")
+        string lCurrentPlayer;
+        if (currentPlayer == "PlayerOne") { lCurrentPlayer = "playerOne"; }
+        else if (currentPlayer == "PlayerTwo") { lCurrentPlayer = "playerTwo"; }
+
+        string lOtherPlayer;
+        if (currentPlayer == "PlayerOne") { lOtherPlayer = "playerTwo"; }
+        else { lOtherPlayer = "playerOne"; }
+
+        Player currentPlayerObj = GetCurrentPlayerObj();
+        Player otherPlayerObj = GetOtherPlayerObj();
+
+        bool hit = false;
+
+        // Loop through each ship in playerTwo Object, and then loop through each occupied 
+        // tile within each Ship object to see if the tile matches the tileNum of the missile
+        foreach (FieldInfo prop in otherPlayerObj.GetType().GetFields())
         {
-            bool hit = false;
+            string shipName = prop.Name;
 
-            // Loop through each ship in playerTwo Object, and then loop through each occupied 
-            // tile within each Ship object to see if the tile matches the tileNum of the missile
-            foreach (FieldInfo prop in playerTwo.GetType().GetFields())
+            foreach (int x in GetOccupiedTiles(otherPlayerObj, shipName))
             {
-                string shipName = prop.Name;
-
-                foreach (int x in GetOccupiedTiles(playerTwo, shipName))
+                if (x == tileNum)
                 {
-                    if (x == tileNum)
-                    {
-                        hit = true;
-                    }
+                    hit = true;
                 }
-            }
-
-            // Spawns the hit or miss prefab at the tile position
-            Vector3 hitSpawnPos = new Vector3(tilePos.x + 0.5f, tilePos.y + 1f, tilePos.z + 0.5f);
-
-            // Toggling UI components
-            componentManager.ToggleButtonInteractable(componentManager.nextPlayerButton);
-            componentManager.ToggleButtonInteractable(componentManager.bombButton);
-
-            if (hit)
-            {
-                StartCoroutine(InstantiateAfterSeconds(hitPrefab, hitSpawnPos, Quaternion.identity, 1.6f, "playerTwo"));
-                UpdateHitDict(playerTwo, tileNum);
-                StartCoroutine(CreatePopupAfterSeconds("Hit!", 1.6f));
-
-                // white object logic
-                CreateWhiteObject("playerTwo", tileNum);
-            }
-            else
-            {
-                StartCoroutine(InstantiateAfterSeconds(missPrefab, hitSpawnPos, Quaternion.identity, 1.6f, "playerTwo"));
-                StartCoroutine(CreatePopupAfterSeconds("Miss!", 1.6f));
             }
         }
 
-        // handle some logic for updating the player object for the hit 
+        // Spawns the hit or miss prefab at the tile position
+        Vector3 hitSpawnPos = new Vector3(tilePos.x + 0.5f, tilePos.y + 1f, tilePos.z + 0.5f);
+
+        // Toggling UI components
+        componentManager.ToggleButtonInteractable(componentManager.bombButton);
+        StartCoroutine(ToggleButtonInteractablesAfterSeconds(1.6f));
+
+        if (hit)
+        {
+            StartCoroutine(InstantiateAfterSeconds(hitPrefab, hitSpawnPos, Quaternion.identity, 1.6f, lOtherPlayer));
+            UpdateHitDict(otherPlayerObj, tileNum);
+            StartCoroutine(CreatePopupAfterSeconds("Hit!", 1.6f, 2f));
+
+            // white object logic
+            CreateWhiteObject(lOtherPlayer, tileNum);
+        }
+        else
+        {
+            StartCoroutine(InstantiateAfterSeconds(missPrefab, hitSpawnPos, Quaternion.identity, 1.6f, lOtherPlayer));
+            StartCoroutine(CreatePopupAfterSeconds("Miss!", 1.6f, 2f));
+        }
+
+        CheckForSink(otherPlayerObj);
+    }
+
+    private void CheckForSink(Player player)
+    {
+        List<Ship> playerShips = new List<Ship>();
+        Ship[] playerInput = {
+            player.Ship_2_01, player.Ship_3_01, player.Ship_3_02, player.Ship_4_01, player.Ship_5_01
+        };
+        playerShips.AddRange(new List<Ship>(playerInput));
+
+        foreach (Ship ship in playerShips)
+        {
+            bool sunk = ship.hitDict.Values.All(value => value);
+            if (sunk)
+            {
+                GameObject shipObj = GetShipFromPlayerType(GetPlayerNameLowercaseFromObj(player), GetShipNameLowercaseFromObj(ship));
+                Debug.Log($"Ship FOund!: {shipObj.name}");
+                shipObj.transform.GetChild(0).GetChild(0).GetComponent<MeshRenderer>().material = greyedOutMaterial;
+            }
+        }
+    }
+
+    private string GetPlayerNameLowercaseFromObj(Player player)
+    { 
+        if (player == playerOne) { return "playerOne"; }
+        else if (player == playerTwo) { return "playerTwo"; }
+        else { return null; }
+    }
+
+    private string GetShipNameLowercaseFromObj(Ship ship)
+    {
+        if (ship == Ship_2_01) { return "Ship_2_01"; }
+        else if (ship == Ship_3_01) { return "Ship_3_01"; }
+        else if (ship == Ship_3_02) { return "Ship_3_02"; }
+        else if (ship == Ship_4_01) { return "Ship_4_01"; }
+        else if (ship == Ship_5_01) { return "Ship_5_01"; }
+        else { return null; }
+    }
+
+    private GameObject GetShipFromPlayerType(string player, string ship)
+    {
+        if (player == "playerOne")
+        {
+            foreach (GameObject obj in playerOneObjs)
+            {
+                Debug.Log($"obj.name: {obj.name}, shipname: {ship}");
+                if (obj.name.Contains(ship)) { return obj; }
+            }
+        }
+        else if (player == "playerTwo")
+        {
+            foreach (GameObject obj in playerTwoObjs)
+            {
+                Debug.Log($"obj.name: {obj.name}, shipname: {ship}");
+                if (obj.name.Contains(ship)) { return obj; }
+            }
+        }
+        return null;
     }
 
     private void CreateWhiteObject(string player, int tileNum)
@@ -262,6 +328,12 @@ public class GameManager : MonoBehaviour
         }
         obj.SetActive(false);
         
+    }
+
+    IEnumerator ToggleButtonInteractablesAfterSeconds(float seconds = 0f)
+    {
+        yield return new WaitForSeconds(seconds);
+        componentManager.ToggleButtonInteractable(componentManager.nextPlayerButton);
     }
  
     private void UpdateShotObjectDict(string player, GameObject item)
@@ -319,15 +391,10 @@ public class GameManager : MonoBehaviour
         return occupiedTiles;
     }
 
-    private void PlaceShotsOnTilemapOnLoad(string player)
-    {
-
-    }
-
     public void NextButton()
     {
-        // instnatiate white golwy thing prefab (check ipad)
-
+        CreatePopup("Switching players! Look away!", 2f);
+        StartCoroutine(SwapScenesAfterSeconds(2f));
     }
 
     IEnumerator InstantiateAfterSeconds(GameObject prefab, Vector3 origin, Quaternion quat, float seconds, string player)
@@ -347,6 +414,27 @@ public class GameManager : MonoBehaviour
         selectionManager.selectedLength = 1;
     }
 
+    private IEnumerator SwapScenesAfterSeconds(float seconds = 1f)
+    {
+        yield return new WaitForSeconds(seconds);
+        SwapScenes();
+    }
+
+    public void SwapScenes()
+    {
+        string curScene = SceneManager.GetActiveScene().name;
+        if (curScene == "PlayerOneSelection")
+        {
+            SwapVisibility("PlayerTwo");
+            SceneManager.LoadScene("PlayerTwoSelection");
+        }
+        else if (curScene == "PlayerTwoSelection")
+        {
+            SwapVisibility("PlayerOne");
+            SceneManager.LoadScene("PlayerOneSelection");
+        }
+    }
+
     public string GetCurrentPlayer()
     {
         if (SceneManager.GetActiveScene().name == "PlayerOneSelection")
@@ -356,6 +444,38 @@ public class GameManager : MonoBehaviour
         else if (SceneManager.GetActiveScene().name == "PlayerTwoSelection")
         {
             return "PlayerTwo";
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public Player GetCurrentPlayerObj()
+    {
+        if (SceneManager.GetActiveScene().name == "PlayerOneSelection")
+        {
+            return playerOne;
+        }
+        else if (SceneManager.GetActiveScene().name == "PlayerTwoSelection")
+        {
+            return playerTwo;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public Player GetOtherPlayerObj()
+    {
+        if (SceneManager.GetActiveScene().name == "PlayerOneSelection")
+        {
+            return playerTwo;
+        }
+        else if (SceneManager.GetActiveScene().name == "PlayerTwoSelection")
+        {
+            return playerOne;
         }
         else
         {
@@ -463,12 +583,12 @@ public class GameManager : MonoBehaviour
         StartCoroutine(DeleteObjectAfterSeconds(popup, deleteSeconds));
     }
 
-    IEnumerator CreatePopupAfterSeconds(string text, float seconds = 0f)
+    IEnumerator CreatePopupAfterSeconds(string text, float seconds = 0f, float deleteSeconds = 3f)
     {
         yield return new WaitForSeconds(seconds);
         GameObject popup = Instantiate(messagePopupPrefab, GameObject.Find("Canvas").transform);
         popup.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = text;
-        StartCoroutine(DeleteObjectAfterSeconds(popup, 3f));
+        StartCoroutine(DeleteObjectAfterSeconds(popup, deleteSeconds));
     }
 
     public static void OnHitEvent(int tileNum)

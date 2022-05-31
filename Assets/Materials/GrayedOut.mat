@@ -7,16 +7,20 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GlowPulseMat01
-  m_Shader: {fileID: -6465566751694194690, guid: c2a2b956d0e45e2458328fea410cbb19, type: 3}
-  m_ValidKeywords: []
+  m_Name: GrayedOut
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_ValidKeywords:
+  - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
+  disabledShaderPasses:
+  - DepthOnly
+  - SHADOWCASTER
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -41,10 +45,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Grid:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -82,9 +82,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Vector1_2d87f8f87533471895a89887bc26ef45: 1.5
-    - Vector1_ee505cdfae4549878bcc7f75f27d5906: 4
-    - Vector1_f36d91dd266f465c9e307ef778f7f5f5: 5
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -94,37 +91,30 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DstBlend: 0
+    - _DstBlend: 10
     - _EnvironmentReflections: 1
-    - _Falloff: 50
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _GridScale: 5
-    - _Metallic: 0
+    - _Metallic: 0.458
     - _OcclusionStrength: 1
-    - _OverlayAmount: 1
     - _Parallax: 0.005
-    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.5
+    - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SrcBlend: 1
-    - _Surface: 0
+    - _SrcBlend: 5
+    - _Surface: 1
     - _WorkflowMode: 1
-    - _ZWrite: 1
-    - __dirty: 1
+    - _ZWrite: 0
     m_Colors:
-    - Color_2b6ea67a02d441e69f79f7760536730f: {r: 0, g: 0.20743637, b: 1.512943, a: 0}
-    - Color_54d1abeef72d4a848b788b135f11ab0a: {r: 0, g: 0.019934427, b: 2.4845788, a: 0}
-    - _BaseColor: {r: 0.062283717, g: 0.8320726, b: 0.9411765, a: 0}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &773334806000334554
+--- !u!114 &1675287018218191189
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
