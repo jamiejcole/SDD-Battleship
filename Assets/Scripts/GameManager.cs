@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
         public int tileNum;
         public int Length;
         public bool isDefault;
+        public bool hasSunk;
         public Dictionary<int, bool> hitDict;
 
         public Ship(int prTileNum, int prLength, bool prIsDefault)
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour
             tileNum = prTileNum;
             Length = prLength;
             isDefault = prIsDefault;
+            hasSunk = false;
 
             hitDict = new Dictionary<int, bool>();
 
@@ -125,6 +127,7 @@ public class GameManager : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         componentManager = GameObject.Find("ComponentManager").GetComponent<ComponentManager>();
+        callCompManReloadSb();
     }
 
     void OnDisable()
@@ -256,6 +259,9 @@ public class GameManager : MonoBehaviour
 
     private void CheckForSink(Player player)
     {
+        string playerName = "";
+        if (player == playerOne) { playerName = "playerOne"; }
+        else { playerName = "playerTwo"; }
         List<Ship> playerShips = new List<Ship>();
         Ship[] playerInput = {
             player.Ship_2_01, player.Ship_3_01, player.Ship_3_02, player.Ship_4_01, player.Ship_5_01
@@ -268,10 +274,90 @@ public class GameManager : MonoBehaviour
             if (sunk)
             {
                 GameObject shipObj = GetShipFromPlayerType(GetPlayerNameLowercaseFromObj(player), GetShipNameLowercaseFromObj(ship));
-                Debug.Log($"Ship FOund!: {shipObj.name}");
                 shipObj.transform.GetChild(0).GetChild(0).GetComponent<MeshRenderer>().material = greyedOutMaterial;
+                componentManager.UpdateScoreboard(playerName, shipObj.name);
+
+                ship.hasSunk = true;
             }
         }
+    }
+
+    private void callCompManReloadSb()
+    {
+        Dictionary<string, bool> p1Sinks = new Dictionary<string, bool>();
+        Dictionary<string, bool> p2Sinks = new Dictionary<string, bool>();
+
+        List<Ship> playerOneShips = new List<Ship>();
+        Ship[] playerOneInput = {
+            playerOne.Ship_2_01, playerOne.Ship_3_01, playerOne.Ship_3_02, playerOne.Ship_4_01, playerOne.Ship_5_01
+        };
+        playerOneShips.AddRange(new List<Ship>(playerOneInput));
+
+        List<Ship> playerTwoShips = new List<Ship>();
+        Ship[] playerTwoInput = {
+            playerTwo.Ship_2_01, playerTwo.Ship_3_01, playerTwo.Ship_3_02, playerTwo.Ship_4_01, playerTwo.Ship_5_01
+        };
+        playerTwoShips.AddRange(new List<Ship>(playerTwoInput));
+
+        int x = 0;
+        foreach (Ship ship in playerOneShips)
+        {
+            if (ship.hasSunk == true)
+            {
+                if (x == 0)
+                {
+                    p1Sinks["0"] = true;
+                }
+                else if (x == 1)
+                {
+                    p1Sinks["1"] = true;
+                }
+                else if (x == 2)
+                {
+                    p1Sinks["2"] = true;
+                }
+                else if (x == 3)
+                {
+                    p1Sinks["3"] = true;
+                }
+                else if (x == 4)
+                {
+                    p1Sinks["4"] = true;
+                }
+            }
+            x = x + 1;
+        }
+
+        x = 0;
+        foreach (Ship ship in playerTwoShips)
+        {
+            if (ship.hasSunk == true)
+            {
+                if (x == 0)
+                {
+                    p2Sinks["0"] = true;
+                }
+                else if (x == 1)
+                {
+                    p2Sinks["1"] = true;
+                }
+                else if (x == 2)
+                {
+                    p2Sinks["2"] = true;
+                }
+                else if (x == 3)
+                {
+                    p2Sinks["3"] = true;
+                }
+                else if (x == 4)
+                {
+                    p2Sinks["4"] = true;
+                }
+            }
+            x = x + 1;
+        }
+
+        componentManager.ReloadScoreboards(p1Sinks, p2Sinks);
     }
 
     private string GetPlayerNameLowercaseFromObj(Player player)
@@ -297,7 +383,6 @@ public class GameManager : MonoBehaviour
         {
             foreach (GameObject obj in playerOneObjs)
             {
-                Debug.Log($"obj.name: {obj.name}, shipname: {ship}");
                 if (obj.name.Contains(ship)) { return obj; }
             }
         }
@@ -305,7 +390,6 @@ public class GameManager : MonoBehaviour
         {
             foreach (GameObject obj in playerTwoObjs)
             {
-                Debug.Log($"obj.name: {obj.name}, shipname: {ship}");
                 if (obj.name.Contains(ship)) { return obj; }
             }
         }
@@ -393,6 +477,7 @@ public class GameManager : MonoBehaviour
 
     public void NextButton()
     {
+        componentManager.ToggleButtonInteractable(componentManager.nextPlayerButton);
         CreatePopup("Switching players! Look away!", 2f);
         StartCoroutine(SwapScenesAfterSeconds(2f));
     }
@@ -613,6 +698,14 @@ public class GameManager : MonoBehaviour
     public void DumpDictToConsole(Dictionary<int, bool> dict)
     {
         foreach (KeyValuePair<int, bool> x in dict)
+        {
+            Debug.Log($"KVP: {x.Key}, {x.Value}");
+        }
+    }
+
+    public void DumpDictToConsole(Dictionary<string, bool> dict)
+    {
+        foreach (KeyValuePair<string, bool> x in dict)
         {
             Debug.Log($"KVP: {x.Key}, {x.Value}");
         }

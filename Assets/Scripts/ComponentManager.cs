@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,7 +29,13 @@ public class ComponentManager : MonoBehaviour
     bool curRadarEnabled;
     bool curMenuItemsEnabled;
 
+    public GameObject scoreboardP1;
+    [SerializeField]
+    private List<GameObject> scoreboardP1Objs;
 
+    public GameObject scoreboardP2;
+    [SerializeField]
+    private List<GameObject> scoreboardP2Objs;
 
     private void Start()
     {
@@ -48,7 +55,26 @@ public class ComponentManager : MonoBehaviour
         confirmMoveButton = GameObject.Find("ConfirmMoveButton");
         trashIcon = GameObject.Find("TrashIcon");
         randomPlace = GameObject.Find("RandomPlace");
-        
+
+        foreach (Transform child in scoreboardP1.transform)
+        {
+            if (child.gameObject.name.Contains("_"))
+            {
+                scoreboardP1Objs.Add(child.gameObject);
+                child.gameObject.SetActive(false);
+            }
+        }
+        scoreboardP1.SetActive(false);
+
+        foreach (Transform child in scoreboardP2.transform)
+        {
+            if (child.gameObject.name.Contains("_"))
+            {
+                scoreboardP2Objs.Add(child.gameObject);
+                child.gameObject.SetActive(false);
+            }
+        }
+        scoreboardP2.SetActive(false);
     }
 
     public void Update()
@@ -87,9 +113,105 @@ public class ComponentManager : MonoBehaviour
         gameManager.inRadarMode = !state;
         bombButton.SetActive(!state);
         nextPlayerButton.SetActive(!state);
+        scoreboardP1.SetActive(!state);
+        scoreboardP2.SetActive(!state);
 
         if (gameManager.publicCurrentViewer == "PlayerOne") { gameManager.publicCurrentViewer = "PlayerTwo"; }
         else if (gameManager.publicCurrentViewer == "PlayerTwo") { gameManager.publicCurrentViewer = "PlayerOne"; }
+    }
+
+    public void UpdateScoreboard(string player, string ship)
+    {
+        Debug.Log($"updating scorebaord for player {player} and ship {ship}");
+        if (player == "playerOne")
+        {
+            if (ship == "mShip_2_01(Clone)")
+            {
+                scoreboardP1Objs[0].SetActive(true);
+            }
+            else if (ship == "mShip_3_01(Clone)")
+            {
+                scoreboardP1Objs[1].SetActive(true);
+            }
+            else if (ship == "mShip_3_02(Clone)")
+            {
+                scoreboardP1Objs[2].SetActive(true);
+            }
+            else if (ship == "mShip_4_01(Clone)")
+            {
+                scoreboardP1Objs[3].SetActive(true);
+            }
+            else if (ship == "mShip_5_01(Clone)")
+            {
+                scoreboardP1Objs[4].SetActive(true);
+            }
+        }
+        if (player == "playerTwo")
+        {
+            if (ship == "mShip_2_01(Clone)")
+            {
+                scoreboardP2Objs[0].SetActive(true);
+            }
+            else if (ship == "mShip_3_01(Clone)")
+            {
+                scoreboardP2Objs[1].SetActive(true);
+            }
+            else if (ship == "mShip_3_02(Clone)")
+            {
+                scoreboardP2Objs[2].SetActive(true);
+            }
+            else if (ship == "mShip_4_01(Clone)")
+            {
+                scoreboardP2Objs[3].SetActive(true);
+            }
+            else if (ship == "mShip_5_01(Clone)")
+            {
+                scoreboardP2Objs[4].SetActive(true);
+            }
+        }
+    }
+
+    public void ReloadScoreboards(Dictionary<string, bool> p1Sinks, Dictionary<string, bool> p2Sinks)
+    {
+        StartCoroutine(reloadAfterSeconds(p1Sinks, p2Sinks, 0.5f));
+    }
+
+    private IEnumerator reloadAfterSeconds(Dictionary<string, bool> p1Sinks, Dictionary<string, bool> p2Sinks, float s)
+    {
+        yield return new WaitForSeconds(s);
+        scoreboardP1.SetActive(true);
+        scoreboardP2.SetActive(true);
+        foreach (KeyValuePair<string, bool> x in p1Sinks)
+        {
+            if (x.Value == true)
+            {
+                int y = Int32.Parse(x.Key);
+                scoreboardP1Objs[y].SetActive(true);
+            }
+        }
+        foreach (KeyValuePair<string, bool> x in p2Sinks)
+        {
+            //Debug.Log($"{x.Key}: {x.Value}");
+            if (x.Value == true)
+            {
+                int y = Int32.Parse(x.Key);
+                scoreboardP2Objs[y].SetActive(true);
+            }
+        }
+    }
+
+    public void outputList(List<GameObject> x)
+    {
+        foreach (var y in x)
+        {
+            Debug.Log(y);
+        }
+    }
+
+    public static void DumpToConsole(object obj)
+    {
+        var output = JsonUtility.ToJson(obj, true);
+        Debug.Log(output);
     }
 
     private void ToggleItem(GameObject obj)
