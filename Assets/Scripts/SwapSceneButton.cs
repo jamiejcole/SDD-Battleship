@@ -6,10 +6,12 @@ using UnityEngine.SceneManagement;
 public class SwapSceneButton : MonoBehaviour
 {
     public GameManager gameManager;
+    public ComponentManager componentManager;
 
     private void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        componentManager = GameObject.Find("ComponentManager").GetComponent<ComponentManager>();
     }
     public void SwapScenes()
     {
@@ -24,5 +26,9 @@ public class SwapSceneButton : MonoBehaviour
             gameManager.SwapVisibility("PlayerOne");
             SceneManager.LoadScene("PlayerOneSelection");
         }
+    }
+    public void ToggleBombButtonInteractable()
+    {
+        componentManager.ToggleButtonInteractable(componentManager.bombButton);
     }
 }

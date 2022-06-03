@@ -90,9 +90,28 @@ public class ComponentManager : MonoBehaviour
         {
             ToggleSetupMenuItems();
         }
+        if (!gameManager.inSetupMode)
+        {
+            ShowScoreboards();
+        }
+        else if (gameManager.inSetupMode)
+        {
+            HideScoreboards();
+        }
 
         curRadarEnabled = gameManager.setupMenuItemsEnabled;
         curMenuItemsEnabled = gameManager.radarButtonEnabled;
+    }
+
+    private void ShowScoreboards()
+    {
+        scoreboardP1.SetActive(true);
+        scoreboardP2.SetActive(true);
+    }
+    private void HideScoreboards()
+    {
+        scoreboardP1.SetActive(false);
+        scoreboardP2.SetActive(false);
     }
 
     public void TriggerBombSelection()
@@ -113,8 +132,6 @@ public class ComponentManager : MonoBehaviour
         gameManager.inRadarMode = !state;
         bombButton.SetActive(!state);
         nextPlayerButton.SetActive(!state);
-        scoreboardP1.SetActive(!state);
-        scoreboardP2.SetActive(!state);
 
         if (gameManager.publicCurrentViewer == "PlayerOne") { gameManager.publicCurrentViewer = "PlayerTwo"; }
         else if (gameManager.publicCurrentViewer == "PlayerTwo") { gameManager.publicCurrentViewer = "PlayerOne"; }
@@ -173,7 +190,7 @@ public class ComponentManager : MonoBehaviour
 
     public void ReloadScoreboards(Dictionary<string, bool> p1Sinks, Dictionary<string, bool> p2Sinks)
     {
-        StartCoroutine(reloadAfterSeconds(p1Sinks, p2Sinks, 0.5f));
+        StartCoroutine(reloadAfterSeconds(p1Sinks, p2Sinks, 0f));
     }
 
     private IEnumerator reloadAfterSeconds(Dictionary<string, bool> p1Sinks, Dictionary<string, bool> p2Sinks, float s)

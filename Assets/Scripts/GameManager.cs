@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour
     public bool setupMenuItemsEnabled = true;
 
     public bool inRadarMode = false;
+    public bool inSetupMode = true;
     public GameObject bombSelectorPref;
 
     List<GameObject> playerOneShotObjects = new List<GameObject>();
@@ -182,7 +183,7 @@ public class GameManager : MonoBehaviour
                 // Changing menu items visiblity
                 setupMenuItemsEnabled = false;
                 radarButtonEnabled = true;
-
+                inSetupMode = false;
                 //componentManager.ToggleSetupMenuItems();
                 //componentManager.ToggleRadar(true);
             }
@@ -369,11 +370,12 @@ public class GameManager : MonoBehaviour
 
     private string GetShipNameLowercaseFromObj(Ship ship)
     {
-        if (ship == Ship_2_01) { return "Ship_2_01"; }
-        else if (ship == Ship_3_01) { return "Ship_3_01"; }
-        else if (ship == Ship_3_02) { return "Ship_3_02"; }
-        else if (ship == Ship_4_01) { return "Ship_4_01"; }
-        else if (ship == Ship_5_01) { return "Ship_5_01"; }
+        DumpToConsole(ship);
+        if (ship == playerOne.Ship_2_01 || ship == playerTwo.Ship_2_01) { return "Ship_2_01"; }
+        else if (ship == playerOne.Ship_3_01 || ship == playerTwo.Ship_3_01) { return "Ship_3_01"; }
+        else if (ship == playerOne.Ship_3_02 || ship == playerTwo.Ship_3_02) { return "Ship_3_02"; }
+        else if (ship == playerOne.Ship_4_01 || ship == playerTwo.Ship_4_01) { return "Ship_4_01"; }
+        else if (ship == playerOne.Ship_5_01 || ship == playerTwo.Ship_5_01) { return "Ship_5_01"; }
         else { return null; }
     }
 
