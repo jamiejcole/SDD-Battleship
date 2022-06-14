@@ -25,6 +25,8 @@ public class ComponentManager : MonoBehaviour
     public GameObject p2CameraRotator;
     public GameObject bombButton;
 
+    public GameObject winnerMenu;
+
 
     bool curRadarEnabled;
     bool curMenuItemsEnabled;
@@ -186,6 +188,28 @@ public class ComponentManager : MonoBehaviour
                 scoreboardP2Objs[4].SetActive(true);
             }
         }
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void DestroyAllDontDestroyOnLoadObjects()
+    {
+
+        var go = new GameObject("Sacrificial Lamb");
+        DontDestroyOnLoad(go);
+
+        foreach (var root in go.scene.GetRootGameObjects())
+        {
+            Destroy(root);
+        }
+    }
+
+    public void PlayAgain()
+    {
+        gameManager.PlayAgain();
     }
 
     public void ReloadScoreboards(Dictionary<string, bool> p1Sinks, Dictionary<string, bool> p2Sinks)

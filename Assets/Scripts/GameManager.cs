@@ -281,6 +281,7 @@ public class GameManager : MonoBehaviour
                 ship.hasSunk = true;
             }
         }
+        callCompManReloadSb();
     }
 
     private void callCompManReloadSb()
@@ -359,6 +360,53 @@ public class GameManager : MonoBehaviour
         }
 
         componentManager.ReloadScoreboards(p1Sinks, p2Sinks);
+        CheckForWin(p1Sinks, p2Sinks);
+    }
+
+    public void PlayAgain()
+    {
+        componentManager.DestroyAllDontDestroyOnLoadObjects();
+        SceneManager.LoadScene(0);
+    }
+
+    public void CheckForWin(Dictionary<string, bool> p1Sinks, Dictionary<string, bool> p2Sinks)
+    {
+        int p1Amt = 0;
+        int p2Amt = 0;
+        foreach (KeyValuePair<string, bool> kvp in p1Sinks)
+        {
+            if (kvp.Value == true)
+            {
+                p1Amt += 1;
+            }
+        }
+        Debug.Log($"p1Amt: {p1Amt}");
+        if (p1Amt >= 5)
+        {
+            //player one wins
+            AnnounceWinner("playerOne");
+            return;
+        }
+        foreach (KeyValuePair<string, bool> kvp in p2Sinks)
+        {
+            if (kvp.Value == true)
+            {
+                p2Amt += 1;
+            }
+        }
+        Debug.Log($"p2Amt: {p2Amt}");
+        if (p2Amt >= 5)
+        {
+            //player two wins
+            AnnounceWinner("playerOne");
+            return;
+        }
+    }
+
+    public void AnnounceWinner(string playerName)
+    {
+        CreatePopup($"Player {playerName} wins!");
+        componentManager.winnerMenu.SetActive(true);
     }
 
     private string GetPlayerNameLowercaseFromObj(Player player)

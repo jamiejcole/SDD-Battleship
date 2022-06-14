@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571336, b: 0.3069219, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2259,7 +2259,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &399552952
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4223,7 +4223,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Player vs Computer
+  m_text: Player vs Player
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3a38378a67d45a54ebc70ca9fcca753b, type: 2}
   m_sharedMaterial: {fileID: -2519822380782300595, guid: 3a38378a67d45a54ebc70ca9fcca753b, type: 2}
@@ -5507,7 +5507,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!64 &1074564655
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8237,7 +8237,7 @@ GameObject:
   - component: {fileID: 1595115095}
   - component: {fileID: 1595115094}
   m_Layer: 5
-  m_Name: PvP
+  m_Name: PvC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10756,7 +10756,7 @@ GameObject:
   - component: {fileID: 2143007917}
   - component: {fileID: 2143007920}
   m_Layer: 5
-  m_Name: PvC
+  m_Name: PvP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
