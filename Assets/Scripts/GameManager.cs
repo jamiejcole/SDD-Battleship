@@ -96,6 +96,8 @@ public class GameManager : MonoBehaviour
 
     public Material greyedOutMaterial;
 
+    public string playerOneUsername;
+    public string playerTwoUsername;
 
     // Singleton Implementation of GameManager:
     private static GameManager _instance;
@@ -134,6 +136,12 @@ public class GameManager : MonoBehaviour
     void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    public void SetUsernames(string one, string two)
+    {
+        playerOneUsername = one;
+        playerTwoUsername = two;
     }
 
     public void GeneratePlayer(Dictionary<string, (int, bool)> ShipStartPositions, bool firstPlayer)
