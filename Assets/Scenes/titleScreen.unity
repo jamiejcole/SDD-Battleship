@@ -9444,6 +9444,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1970762606}
   - component: {fileID: 1970762607}
+  - component: {fileID: 1970762608}
   m_Layer: 0
   m_Name: PregameManager
   m_TagString: Untagged
@@ -9479,8 +9480,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InputWindowPrefab: {fileID: 5788303266965341708, guid: 0f5fd2bfc2f385049a0f9c02e855f07f, type: 3}
+  messagePopupPrefab: {fileID: 6613432146809576258, guid: 983f6421119023042b188e02fa8f755f, type: 3}
   playerOneUsername: 
   playerTwoUsername: 
+--- !u!114 &1970762608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1970762605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8647df999c2f7054993baaa739b20fa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1985102989
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10876,7 +10890,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2143007918}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1970762607}
+        m_TargetAssemblyTypeName: PregameManager, Assembly-CSharp
+        m_MethodName: StartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &2144258707 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4084504788478774, guid: fcc4229f634be704aa0dd336ad33c2b5, type: 3}

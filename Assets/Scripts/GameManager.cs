@@ -29,9 +29,19 @@ public class GameManager : MonoBehaviour
 
             hitDict = new Dictionary<int, bool>();
 
-            for (int i = 0; i < Length; i++)
+            if (isDefault == true)
             {
-                hitDict.Add(tileNum + i, false);
+                for (int i = 0; i < Length; i++)
+                {
+                    hitDict.Add(tileNum + i, false);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < Length; i++)
+                {
+                    hitDict.Add(tileNum - (i*10), false);
+                }
             }
         }
     }
@@ -147,7 +157,7 @@ public class GameManager : MonoBehaviour
     public void GeneratePlayer(Dictionary<string, (int, bool)> ShipStartPositions, bool firstPlayer)
     {
         // Generates Ship objects for each position in the dict
-
+        DumpDictToConsole(ShipStartPositions);
         (int, bool) x;
 
         ShipStartPositions.TryGetValue("Ship_2_01", out x);
@@ -234,6 +244,7 @@ public class GameManager : MonoBehaviour
 
             foreach (int x in GetOccupiedTiles(otherPlayerObj, shipName))
             {
+                //Debug.Log($"Occupied tile: {x}, tilenum: {tileNum}");
                 if (x == tileNum)
                 {
                     hit = true;
@@ -279,6 +290,7 @@ public class GameManager : MonoBehaviour
 
         foreach (Ship ship in playerShips)
         {
+            DumpDictToConsole(ship.hitDict);
             bool sunk = ship.hitDict.Values.All(value => value);
             if (sunk)
             {
@@ -388,7 +400,7 @@ public class GameManager : MonoBehaviour
                 p1Amt += 1;
             }
         }
-        Debug.Log($"p1Amt: {p1Amt}");
+        //Debug.Log($"p1Amt: {p1Amt}");
         if (p1Amt >= 5)
         {
             //player one wins
@@ -402,7 +414,7 @@ public class GameManager : MonoBehaviour
                 p2Amt += 1;
             }
         }
-        Debug.Log($"p2Amt: {p2Amt}");
+        //Debug.Log($"p2Amt: {p2Amt}");
         if (p2Amt >= 5)
         {
             //player two wins
@@ -515,6 +527,7 @@ public class GameManager : MonoBehaviour
 
     private List<int> GetOccupiedTiles(Player player, string shipName)
     {
+        // find a way to determine whether its facing default or not
         List<int> occupiedTiles = new List<int>();
 
         List<Ship> playerShips = new List<Ship>();
@@ -527,8 +540,33 @@ public class GameManager : MonoBehaviour
         {
             foreach (KeyValuePair<int, bool> x in ship.hitDict)
             {
+                //Debug.Log($"KEY: {x.Key}, VAL: {x.Value}");
                 occupiedTiles.Add(x.Key);
             }
+            //if (!ship.isDefault)
+            //{
+            //    int startingPos = 0;
+            //    foreach (KeyValuePair<int, bool> x in ship.hitDict)
+            //    {
+            //        startingPos = x.Key;
+            //        break;
+            //    }
+            //    //Debug.Log($"starting pos: {startingPos}, length: {ship.Length}");
+            //    for (int i = 0; i < ship.Length; i++)
+            //    {
+            //        //- 10
+            //        occupiedTiles.Add(startingPos - (i * 10));
+            //        //Debug.Log($"addding {startingPos - (i * 10)} to occupiedTiles");
+            //    }
+            //}
+            //else
+            //{
+            //    foreach (KeyValuePair<int, bool> x in ship.hitDict)
+            //    {
+            //        //Debug.Log($"KEY: {x.Key}, VAL: {x.Value}");
+            //        occupiedTiles.Add(x.Key);
+            //    }
+            //}
         }
         return occupiedTiles;
     }
@@ -756,6 +794,14 @@ public class GameManager : MonoBehaviour
     public void DumpDictToConsole(Dictionary<int, bool> dict)
     {
         foreach (KeyValuePair<int, bool> x in dict)
+        {
+            Debug.Log($"KVP: {x.Key}, {x.Value}");
+        }
+    }
+
+    public void DumpDictToConsole(Dictionary<string, (int, bool)> dict)
+    {
+        foreach (KeyValuePair<string, (int, bool)> x in dict)
         {
             Debug.Log($"KVP: {x.Key}, {x.Value}");
         }

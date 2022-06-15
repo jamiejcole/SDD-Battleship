@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 1
+    path: Assets/Scenes/titleScreen.unity
+    guid: 6bcaec02e094d2548a3932c731876ef9
+  - enabled: 1
     path: Assets/Scenes/PlayerOneSelection.unity
     guid: 8aab4afb7e6060842ab4107e617c91ea
   - enabled: 1
