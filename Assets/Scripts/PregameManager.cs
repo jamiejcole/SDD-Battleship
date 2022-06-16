@@ -34,6 +34,11 @@ public class PregameManager: MonoBehaviour
         }
     }
 
+    public void OpenHelpMenu()
+    {
+        // do shit
+    }
+
     public void StartGame()
     {
         if (playerOneUsername != "" && playerTwoUsername != "")
