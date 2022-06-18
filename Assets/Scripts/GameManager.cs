@@ -141,6 +141,21 @@ public class GameManager : MonoBehaviour
     {
         componentManager = GameObject.Find("ComponentManager").GetComponent<ComponentManager>();
         callCompManReloadSb();
+
+        //TextMeshProUGUI playerText = GameObject.Find("PlayerText").GetComponent<TMPro.TextMeshProUGUI>();
+        
+        //if (GetCurrentPlayer() == "PlayerOne") { playerText.text = $"{playerOneUsername}'s Turn"; }
+        //else if (GetCurrentPlayer() == "PlayerTwo") { playerText.text = $"{playerTwoUsername}'s Turn"; }
+        //StartCoroutine(UpdateHeaderUsername());
+    }
+    
+    IEnumerator UpdateHeaderUsername()
+    {
+        yield return new WaitForSeconds(1f);
+        TextMeshProUGUI playerText = GameObject.Find("PlayerText").GetComponent<TMPro.TextMeshProUGUI>();
+
+        if (GetCurrentPlayer() == "PlayerOne") { playerText.text = $"{playerOneUsername}'s Turn"; }
+        else if (GetCurrentPlayer() == "PlayerTwo") { playerText.text = $"{playerTwoUsername}'s Turn"; }
     }
 
     void OnDisable()

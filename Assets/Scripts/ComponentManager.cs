@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class ComponentManager : MonoBehaviour
 {
@@ -26,7 +27,6 @@ public class ComponentManager : MonoBehaviour
     public GameObject bombButton;
 
     public GameObject winnerMenu;
-
 
     bool curRadarEnabled;
     bool curMenuItemsEnabled;
@@ -57,6 +57,13 @@ public class ComponentManager : MonoBehaviour
         confirmMoveButton = GameObject.Find("ConfirmMoveButton");
         trashIcon = GameObject.Find("TrashIcon");
         randomPlace = GameObject.Find("RandomPlace");
+
+        if (SceneManager.GetActiveScene().name == "PlayerOneSelection") { winnerMenu.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = $"{gameManager.playerOneUsername} wins!"; }
+        else if (SceneManager.GetActiveScene().name == "PlayerTwoSelection") { winnerMenu.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = $"{gameManager.playerTwoUsername} wins!"; }
+
+
+        scoreboardP1.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = gameManager.playerOneUsername;
+        scoreboardP2.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = gameManager.playerTwoUsername;
 
         foreach (Transform child in scoreboardP1.transform)
         {
@@ -220,6 +227,7 @@ public class ComponentManager : MonoBehaviour
     private IEnumerator reloadAfterSeconds(Dictionary<string, bool> p1Sinks, Dictionary<string, bool> p2Sinks, float s)
     {
         yield return new WaitForSeconds(s);
+        
         scoreboardP1.SetActive(true);
         scoreboardP2.SetActive(true);
         foreach (KeyValuePair<string, bool> x in p1Sinks)
@@ -305,7 +313,7 @@ public class ComponentManager : MonoBehaviour
         confirmMoveButton.SetActive(state);
         trashIcon.SetActive(state);
         // TODO: remove this in future when it is not needed
-        randomPlace.SetActive(state);
+        //randomPlace.SetActive(state);
     }
     public void ToggleSetupMenuItems(bool state)
     {
@@ -317,6 +325,6 @@ public class ComponentManager : MonoBehaviour
         confirmMoveButton.SetActive(state);
         trashIcon.SetActive(state);
         // TODO: remove this in future when it is not needed
-        randomPlace.SetActive(state);
+        //randomPlace.SetActive(state);
     }
 }

@@ -95,6 +95,12 @@ public class TrashCursor : MonoBehaviour
         return all.ToArray();
     }
 
+    public void DestoryTrashCursor()
+    {
+        flushHighlight();
+        Destroy(gameObject);
+    }
+
     private void flushHighlight()
     {
         foreach (GameObject ship in gameObjs)

@@ -70,4 +70,11 @@ public class BindToCursor : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public void DestroyBindToCursor()
+    {
+        selectionManager.isHighlighting = false;
+        selectionManager.cleanTiles();
+        Destroy(gameObject);
+    }
 }

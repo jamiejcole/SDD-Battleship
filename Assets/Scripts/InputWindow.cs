@@ -14,6 +14,15 @@ public class InputWindow : MonoBehaviour
         pregameManager = GameObject.Find("PregameManager").GetComponent<PregameManager>();
         input = transform.GetChild(2).GetComponent<TMP_InputField>();
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            Ok();
+        }
+    }
+
     public void Destroy()
     {
         Destroy(gameObject);
@@ -24,5 +33,6 @@ public class InputWindow : MonoBehaviour
 
         pregameManager.updateUsername(output, playerNum);
         Destroy();
+        pregameManager.CreatePopup($"Set Player {playerNum}'s name to '{output}'!", 2f);
     }
 }
