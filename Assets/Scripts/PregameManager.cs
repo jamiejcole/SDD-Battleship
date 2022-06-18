@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,13 +14,19 @@ public class PregameManager: MonoBehaviour
     public string playerOneUsername;
     public string playerTwoUsername;
 
+    public GameObject[] helpMenuList;
+    public GameObject helpMenu;
+
     public void CreateInputPopup(string text)
     {
-        int num = Int32.Parse(text.Substring(0, 1));
-        string str = text.Substring(1, text.Length - 1);
-        GameObject x = Instantiate(InputWindowPrefab, GameObject.Find("Canvas").transform);
-        x.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = str;
-        x.GetComponent<InputWindow>().playerNum = num;
+        if (GameObject.Find("InputWindow(Clone)") == null) 
+        {
+            int num = Int32.Parse(text.Substring(0, 1));
+            string str = text.Substring(1, text.Length - 1);
+            GameObject x = Instantiate(InputWindowPrefab, GameObject.Find("Canvas").transform);
+            x.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = str;
+            x.GetComponent<InputWindow>().playerNum = num;
+        }
     }
 
     public void updateUsername(string input, int playerNum)
@@ -34,9 +41,60 @@ public class PregameManager: MonoBehaviour
         }
     }
 
-    public void OpenHelpMenu()
+    public void Start()
     {
-        // do shit
+        helpMenu = GameObject.Find("HelpMenu");
+        GameObject items = GameObject.Find("HelpItems");
+        helpMenuList = new GameObject[items.transform.childCount];
+        int i = 0;
+        foreach (Transform child in items.transform)
+        {
+            helpMenuList[i] = child.gameObject;
+            child.gameObject.SetActive(false);
+            i += 1;
+        }
+        helpMenuList[0].SetActive(true);
+        helpMenu.SetActive(false);
+    }
+
+    public void NextMenu(bool forwards)
+    {
+        for (int i = 0; i < helpMenuList.Length; i++)
+        {
+            if (helpMenuList[i].activeSelf)
+            {
+                helpMenuList[i].SetActive(false);
+                if (forwards)
+                {
+                    if (i == helpMenuList.Length - 1)
+                    {
+                        helpMenuList[0].SetActive(true);
+                    }
+                    else
+                    {
+                        helpMenuList[i + 1].SetActive(true);
+                    }
+                    
+                }
+                else
+                {
+                    if (i == 0)
+                    {
+                        helpMenuList.Last().SetActive(true);
+                    }
+                    else
+                    {
+                        helpMenuList[i - 1].SetActive(true);
+                    }
+                }
+                return;
+            }
+        }
+    }
+
+    public void SetHelpMenuState(bool state)
+    {
+        helpMenu.SetActive(state);
     }
 
     public void StartGame()
