@@ -29,6 +29,11 @@ public class PregameManager: MonoBehaviour
         }
     }
 
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
     public void updateUsername(string input, int playerNum)
     {
         if (playerNum == 1)
