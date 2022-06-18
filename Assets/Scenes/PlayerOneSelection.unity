@@ -6578,8 +6578,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 26
+  m_fontSizeBase: 26
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -21294,8 +21294,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 26
+  m_fontSizeBase: 26
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -35936,6 +35936,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80fca220b20f9834ba1d4b7902283dc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pregameManager: {fileID: 0}
+  playerText: {fileID: 0}
 --- !u!1001 &1942967169
 PrefabInstance:
   m_ObjectHideFlags: 0

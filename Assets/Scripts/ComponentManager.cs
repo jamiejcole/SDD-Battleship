@@ -62,8 +62,8 @@ public class ComponentManager : MonoBehaviour
         else if (SceneManager.GetActiveScene().name == "PlayerTwoSelection") { winnerMenu.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = $"{gameManager.playerTwoUsername} wins!"; }
 
 
-        scoreboardP1.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = gameManager.playerOneUsername;
-        scoreboardP2.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = gameManager.playerTwoUsername;
+        scoreboardP1.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = $"{gameManager.playerOneUsername}'s ships";
+        scoreboardP2.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = $"{gameManager.playerTwoUsername}'s ships";
 
         foreach (Transform child in scoreboardP1.transform)
         {

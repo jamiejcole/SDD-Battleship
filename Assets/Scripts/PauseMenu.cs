@@ -6,11 +6,13 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     public GameObject helpMenu;
+    ComponentManager componentManager;
 
     private void Awake()
     {
         helpMenu = GameObject.Find("HelpMenu");
         HelpMenu helpMenuHelpMenu = helpMenu.GetComponent<HelpMenu>();
+        componentManager = GameObject.Find("ComponentManager").GetComponent<ComponentManager>();
         helpMenuHelpMenu.StartHelpMenu();
     }
 
@@ -44,6 +46,7 @@ public class PauseMenu : MonoBehaviour
 
     public void MainMenu()
     {
+        componentManager.DestroyAllDontDestroyOnLoadObjects();
         SceneManager.LoadScene(0);
     }
 
