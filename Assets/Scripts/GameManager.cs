@@ -9,6 +9,10 @@ using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
+    // This script encapsulates the main logic controller for the game. This script is instantiated once and only once
+    // while the game is running, as seen by the Singleton implementation below. 
+
+
     // This Ship class allows individual Ship objects to be created which
     // encapsulate data about any given ship on the board itself.
     [Serializable]
@@ -109,6 +113,8 @@ public class GameManager : MonoBehaviour
     public string playerOneUsername;
     public string playerTwoUsername;
 
+
+
     // Singleton Implementation of GameManager:
     private static GameManager _instance;
     public static GameManager Instance { get { return _instance; } }
@@ -142,6 +148,7 @@ public class GameManager : MonoBehaviour
         componentManager = GameObject.Find("ComponentManager").GetComponent<ComponentManager>();
         callCompManReloadSb();
 
+        // Deprecated 
         //TextMeshProUGUI playerText = GameObject.Find("PlayerText").GetComponent<TMPro.TextMeshProUGUI>();
         
         //if (GetCurrentPlayer() == "PlayerOne") { playerText.text = $"{playerOneUsername}'s Turn"; }
@@ -151,6 +158,7 @@ public class GameManager : MonoBehaviour
     
     IEnumerator UpdateHeaderUsername()
     {
+        // Updates the header for the scene to the current player's username.
         yield return new WaitForSeconds(1f);
         TextMeshProUGUI playerText = GameObject.Find("PlayerText").GetComponent<TMPro.TextMeshProUGUI>();
 
@@ -158,11 +166,13 @@ public class GameManager : MonoBehaviour
         else if (GetCurrentPlayer() == "PlayerTwo") { playerText.text = $"{playerTwoUsername}'s Turn"; }
     }
 
+    // Used for determining the current scene
     void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    // Called from PregameManager.cs
     public void SetUsernames(string one, string two)
     {
         playerOneUsername = one;
@@ -211,8 +221,6 @@ public class GameManager : MonoBehaviour
                 StartCoroutine(LoadSceneAfterSeconds("PlayerOneSelection", 1f));
                 StartCoroutine(SwapVisibilityAfterSeconds("PlayerOne", 1f));
 
-                // TODO: Need to fix the issue with ships being disclosed before switching scenes.
-
                 // Changing menu items visiblity
                 setupMenuItemsEnabled = false;
                 radarButtonEnabled = true;
@@ -229,6 +237,8 @@ public class GameManager : MonoBehaviour
 
     public void LaunchMissile(int tileNum)
     {
+        // This function is run when a missie is launched. 
+
         // instantiate the missile obj
         Vector3 tilePos = selectionManager.p2tiles[tileNum].transform.position;
         Vector3 missileSpawnPos = new Vector3(tilePos.x + 0.5f, tilePos.y + 13, tilePos.z + 0.5f);
@@ -294,6 +304,7 @@ public class GameManager : MonoBehaviour
 
     private void CheckForSink(Player player)
     {
+        // Determines whether any of the given player's ships have been sunk or not
         string playerName = "";
         if (player == playerOne) { playerName = "playerOne"; }
         else { playerName = "playerTwo"; }
@@ -321,6 +332,7 @@ public class GameManager : MonoBehaviour
 
     private void callCompManReloadSb()
     {
+        // Calls the ComponentManager.cs Reload scoreboard function, and determines the current sinks based on player information
         Dictionary<string, bool> p1Sinks = new Dictionary<string, bool>();
         Dictionary<string, bool> p2Sinks = new Dictionary<string, bool>();
 
@@ -406,6 +418,8 @@ public class GameManager : MonoBehaviour
 
     public void CheckForWin(Dictionary<string, bool> p1Sinks, Dictionary<string, bool> p2Sinks)
     {
+        // Determines if a player has won the game given both player's current sink dicts
+
         int p1Amt = 0;
         int p2Amt = 0;
         foreach (KeyValuePair<string, bool> kvp in p1Sinks)
@@ -440,6 +454,7 @@ public class GameManager : MonoBehaviour
 
     public void AnnounceWinner(string playerName)
     {
+        // Announces the winner of the game
         CreatePopup($"Player {playerName} wins!");
         componentManager.winnerMenu.SetActive(true);
     }
@@ -520,6 +535,7 @@ public class GameManager : MonoBehaviour
 
     private void UpdateHitDict(Player player, int tileNum)
     {
+        // Updates a ship's hitDict based on the provided tilenum and player object
         List<Ship> playerShips = new List<Ship>();
         Ship[] playerInput = {
             player.Ship_2_01, player.Ship_3_01, player.Ship_3_02, player.Ship_4_01, player.Ship_5_01
@@ -542,6 +558,8 @@ public class GameManager : MonoBehaviour
 
     private List<int> GetOccupiedTiles(Player player, string shipName)
     {
+        // Returns a list of integers representing the occupied tiles a given player's ships exist in
+
         // find a way to determine whether its facing default or not
         List<int> occupiedTiles = new List<int>();
 
@@ -558,6 +576,7 @@ public class GameManager : MonoBehaviour
                 //Debug.Log($"KEY: {x.Key}, VAL: {x.Value}");
                 occupiedTiles.Add(x.Key);
             }
+            // Deprecated 
             //if (!ship.isDefault)
             //{
             //    int startingPos = 0;
@@ -649,6 +668,7 @@ public class GameManager : MonoBehaviour
 
     public Player GetCurrentPlayerObj()
     {
+        // Used for determining the current player object
         if (SceneManager.GetActiveScene().name == "PlayerOneSelection")
         {
             return playerOne;
@@ -665,6 +685,7 @@ public class GameManager : MonoBehaviour
 
     public Player GetOtherPlayerObj()
     {
+        // Used for determining the inverse of the current player object
         if (SceneManager.GetActiveScene().name == "PlayerOneSelection")
         {
             return playerTwo;
@@ -681,6 +702,7 @@ public class GameManager : MonoBehaviour
 
     public void SwapVisibility(string currentViewer)
     {        
+        // Swaps the player visibility between player and player, used when switching scenes on DoNotDestroy objects.
         if (currentViewer == "PlayerOne")
         {
             publicCurrentViewer = "PlayerOne";
@@ -774,6 +796,7 @@ public class GameManager : MonoBehaviour
 
     public void CreatePopup(string text, float deleteSeconds = 3f)
     {
+        // Instantiates a text popup given a string 
         GameObject popup = Instantiate(messagePopupPrefab, GameObject.Find("Canvas").transform);
         popup.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = text;
         StartCoroutine(DeleteObjectAfterSeconds(popup, deleteSeconds));
@@ -789,6 +812,8 @@ public class GameManager : MonoBehaviour
 
     public static void OnHitEvent(int tileNum)
     {
+        // Deprecated, replaced by other functions
+
         // look through the player class to find all ship objects
         // for each ship object, find all 
     }

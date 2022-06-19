@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 
 public class PregameManager: MonoBehaviour
 {
+    // This script manages the logic for pre-game setup, including setting usernames and game configuration
+
     public GameObject InputWindowPrefab;
     public GameObject messagePopupPrefab;
 
@@ -19,6 +21,7 @@ public class PregameManager: MonoBehaviour
 
     public void CreateInputPopup(string text)
     {
+        // Creates an input window based on a string
         if (GameObject.Find("InputWindow(Clone)") == null) 
         {
             int num = Int32.Parse(text.Substring(0, 1));
@@ -48,6 +51,7 @@ public class PregameManager: MonoBehaviour
 
     public void Start()
     {
+        // On Game Open
         helpMenu = GameObject.Find("HelpMenu");
         GameObject items = GameObject.Find("HelpItems");
         helpMenuList = new GameObject[items.transform.childCount];
@@ -64,6 +68,7 @@ public class PregameManager: MonoBehaviour
 
     public void NextMenu(bool forwards)
     {
+        // Used for traversing the user help menu
         for (int i = 0; i < helpMenuList.Length; i++)
         {
             if (helpMenuList[i].activeSelf)
@@ -104,6 +109,7 @@ public class PregameManager: MonoBehaviour
 
     public void StartGame()
     {
+        // Calls the game start, and checks whether both player's usernames have been set.
         if (playerOneUsername != "" && playerTwoUsername != "")
         {
             // start

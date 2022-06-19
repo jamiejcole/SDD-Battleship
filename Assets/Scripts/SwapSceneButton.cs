@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class SwapSceneButton : MonoBehaviour
 {
+    // Deprecated, used for debugging, do not ship
+
     public GameManager gameManager;
     public ComponentManager componentManager;
 

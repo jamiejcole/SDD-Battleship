@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class WaterSwitcher : MonoBehaviour
 {
+    // Deprecated, used for debugging, do not ship
+
     public GameObject water;
     public GameObject fakeWater;
 

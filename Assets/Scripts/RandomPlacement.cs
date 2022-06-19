@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class RandomPlacement : MonoBehaviour
 {
+    // Deprecated script, used for debugging purposes. Not to be shipped with the final game.
+
+
     SetupManager setupManager;
     GameManager gameManager;
     ComponentManager componentManager;

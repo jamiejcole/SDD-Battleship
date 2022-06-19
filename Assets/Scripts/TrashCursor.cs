@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class TrashCursor : MonoBehaviour
 {
+    // Used for deleting ships in the pre-game, and manages the logic for deleting the corresponding items in the setupmanager script
+
     public Material highlightMat;
     public Material defaultMat;
 

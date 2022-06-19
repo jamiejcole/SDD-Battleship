@@ -5,11 +5,14 @@ using UnityEngine;
 
 public class HelpMenu : MonoBehaviour
 {
+    // HelpMenu object used for controlling the user help menu
+
     public GameObject[] helpMenuList;
     public GameObject helpMenu;
 
     public void StartHelpMenu()
     {
+        // Initialises the help menu
         helpMenu = transform.gameObject;
         GameObject items = GameObject.Find("HelpItems");
         helpMenuList = new GameObject[items.transform.childCount];
@@ -26,6 +29,7 @@ public class HelpMenu : MonoBehaviour
 
     public void NextMenu(bool forwards)
     {
+        // Activates the next or previous help menu item based on bool forwards state
         for (int i = 0; i < helpMenuList.Length; i++)
         {
             if (helpMenuList[i].activeSelf)

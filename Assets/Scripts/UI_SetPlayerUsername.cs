@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class UI_SetPlayerUsername : MonoBehaviour
 {
+    // Used for setting the header to the players username based on the current player
     public PregameManager pregameManager;
     public TextMeshProUGUI playerText;
 

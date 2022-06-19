@@ -56,7 +56,6 @@ public class BindToCursor : MonoBehaviour
                 {
                     selectionManager.isHighlighting = false;
                     selectionManager.cleanTiles();
-                    //actualButton.interactable = false;
                     Destroy(gameObject);
                 }
             }

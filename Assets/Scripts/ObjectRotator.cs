@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ObjectRotator : MonoBehaviour
 {
+    // Sets the rotation of a gameobject based on the camera's rotation
+
     public GameObject CamRotator;
 
     void Update()

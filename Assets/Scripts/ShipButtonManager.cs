@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class ShipButtonManager : MonoBehaviour
 {
+    // Used to handle the interactibility of the ship placement buttons based on
+    // whether the corresponding ships have been placed or not
+
     public GameObject button_2_01;
     public GameObject button_3_01;
     public GameObject button_3_02;

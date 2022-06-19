@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class SetupManager : MonoBehaviour
 {
+    // This script is used to handle the logic for placing ships in the pre-game lobby. 
+
     ShipButtonManager shipButtonManager;
     public SelectionManager selectionManager;
     GameManager gameManager;
@@ -30,6 +32,8 @@ public class SetupManager : MonoBehaviour
     }
     public bool CreateShip(GameObject tile, string type)
     {
+        // Creating a physical ship GameObjet in the scene.
+
         GameObject spawnObj;
         spawnObj = GetField(type);
         Vector3 originalPos;
@@ -44,6 +48,7 @@ public class SetupManager : MonoBehaviour
             return false;
         }
         
+        // Setting our params for instantiation
         Vector3 spawnPos = new Vector3(originalPos.x + 0.5f, originalPos.y + 1, originalPos.z + 0.5f);
         Quaternion rotation;
 
@@ -55,6 +60,7 @@ public class SetupManager : MonoBehaviour
         bool DEFAULT = selectionManager.isFacingDefault;
 
 
+        // If the user is allowed to place a ship there
         if (CheckLegalPlacement(LENGTH, TILENUM, DEFAULT))
         {
             GameObject shipInstance = Instantiate(spawnObj, spawnPos, rotation);
@@ -93,6 +99,7 @@ public class SetupManager : MonoBehaviour
     // todo: remove tiles from occupied list if ships are trashed 
     private List<int> AddItemsToOccupied(int Length, int tileNum, bool isFacingDefault)
     {
+        // Adds items to the occupied tile list based on the ship length, rotation and origin position
         List<int> list = new List<int>();
         if (isFacingDefault)
         {
@@ -152,6 +159,7 @@ public class SetupManager : MonoBehaviour
 
     public bool CheckLegalPlacement(int Length, int tileNum, bool isFacingDefault)
     {
+        // Used to determine whether the user is allowed to place a ship at a given position and rotation
         bool onNewLine = CheckOnNewLine(Length, tileNum, isFacingDefault);
         bool intersects = CheckShipIntersections(Length, tileNum, isFacingDefault);
 
@@ -165,6 +173,7 @@ public class SetupManager : MonoBehaviour
     // works
     private bool CheckShipIntersections(int Length, int tileNum, bool isFacingDefault)
     {
+        // Determines whether a ship is intersecting with another ship
         List<int> newBoatTiles = AddItemsToOccupied(Length, tileNum, isFacingDefault);
         List<int> occupied = occupiedTiles;
 

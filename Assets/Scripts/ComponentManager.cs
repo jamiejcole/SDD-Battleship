@@ -8,6 +8,12 @@ using UnityEngine.SceneManagement;
 
 public class ComponentManager : MonoBehaviour
 {
+    // This script is attached to a ComponentManager object that is instantiated each time a scene is regenerated. 
+    // This script holds reference to the GameObject's in the currently active scene, and allows other scripts
+    // to manipulate them.
+
+    // Defining the references to the objects in the scene.
+
     public GameManager gameManager;
 
     public GameObject playerRadar;
@@ -41,6 +47,8 @@ public class ComponentManager : MonoBehaviour
 
     private void Start()
     {
+        // Initialising objects, and hiding them upon definition
+
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         playerRadar = GameObject.Find("PlayerRadar");
@@ -65,6 +73,7 @@ public class ComponentManager : MonoBehaviour
         scoreboardP1.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = $"{gameManager.playerOneUsername}'s ships";
         scoreboardP2.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = $"{gameManager.playerTwoUsername}'s ships";
 
+        // Adding scoreboard elements to the list, and then hiding them
         foreach (Transform child in scoreboardP1.transform)
         {
             if (child.gameObject.name.Contains("_"))
@@ -88,6 +97,7 @@ public class ComponentManager : MonoBehaviour
 
     public void Update()
     {
+        // Determines whether to hide or show certain screen elements based on object visibility
         curRadarEnabled = playerRadar.activeSelf;
         curMenuItemsEnabled = x2u01.activeSelf;
 
@@ -135,6 +145,8 @@ public class ComponentManager : MonoBehaviour
 
     public void SwapCams()
     {
+        // Swaps the cameras in any scene between 'player one' and 'player two'.
+        // It deactivates one camera, and reactivates the other, while togglign screen elements
         bool state = !CameraRotator.activeSelf;
         CameraRotator.SetActive(state);
         p2CameraRotator.SetActive(!state);
@@ -148,6 +160,7 @@ public class ComponentManager : MonoBehaviour
 
     public void UpdateScoreboard(string player, string ship)
     {
+        // Quick way of updating the scoreboard GameObjects based on the params provided
         Debug.Log($"updating scorebaord for player {player} and ship {ship}");
         if (player == "playerOne")
         {
@@ -204,7 +217,7 @@ public class ComponentManager : MonoBehaviour
 
     public void DestroyAllDontDestroyOnLoadObjects()
     {
-
+        // Used for wiping the current game session, and taking the player back to the main menu
         var go = new GameObject("Sacrificial Lamb");
         DontDestroyOnLoad(go);
 
@@ -226,6 +239,7 @@ public class ComponentManager : MonoBehaviour
 
     private IEnumerator reloadAfterSeconds(Dictionary<string, bool> p1Sinks, Dictionary<string, bool> p2Sinks, float s)
     {
+        // Used for updating or 'reloading' the scoreboard GameObjects based on passed dict params
         yield return new WaitForSeconds(s);
         
         scoreboardP1.SetActive(true);
@@ -271,6 +285,7 @@ public class ComponentManager : MonoBehaviour
 
     public void ToggleButtonInteractable(GameObject obj)
     {
+        // Sets the state of a button being interactable based on it's current state
         Button actualButton = obj.GetComponent<Button>();
         if (obj.GetComponent<Button>().interactable == true)
         {

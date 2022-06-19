@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 
 public class AutoSelectFieldTextOnEnable : UIBehaviour
 {
+    // This class is used on the Text Input fields to automatically 'activate' them for input upon instantiation.
     private TMP_InputField _field;
 
     protected override void Awake()

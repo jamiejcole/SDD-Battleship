@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class SelectionManager : MonoBehaviour
 {  
+    // This script is used for managing the 'highlighting' of tile's based on the user's current ship selection.
+
     // Defining vars, setting default params
     public Material highlightMat;
     public Material defaultMat;
@@ -68,6 +70,7 @@ public class SelectionManager : MonoBehaviour
 
     private Material GetDefaultMat()
     {
+        // Determines the 'default' material for tiles based on which player's turn it is
         if (gameManager.publicCurrentViewer == "PlayerOne")
         {
             return PlayerOneDefaultMat;
@@ -84,6 +87,7 @@ public class SelectionManager : MonoBehaviour
 
     private Material GetDefaultMatInverse()
     {
+        // Opposite of GetDefaultMat()
         if (gameManager.publicCurrentViewer == "PlayerOne")
         {
             return PlayerTwoDefaultMat;
@@ -102,6 +106,7 @@ public class SelectionManager : MonoBehaviour
     {
         if (isHighlighting)
         {
+            // Resetting the tiles each frame, if we are currently highlighting
             cleanTiles();
 
             RaycastHit hitInfo = new RaycastHit();
@@ -209,6 +214,7 @@ public class SelectionManager : MonoBehaviour
 
     public void cleanTiles()
     {
+        // Wipes all the current tiles to be the defualt materials/colours
         if (gameManager.publicCurrentViewer == "PlayerOne" && SceneManager.GetActiveScene().name == "PlayerOneSelection")
         {
             foreach (GameObject obj in tiles)
@@ -266,6 +272,7 @@ public class SelectionManager : MonoBehaviour
 
     private string GetParentOfBlocks()
     {
+        // Honestly, I have no idea what this does or what it is used for
         string parent;
         if (gameManager.publicCurrentViewer == "PlayerOne" && SceneManager.GetActiveScene().name == "PlayerOneSelection")
         {
@@ -313,6 +320,7 @@ public class SelectionManager : MonoBehaviour
 
     public string MakeCast()
     {
+        // Makes a raycast from the camera to determine which tile the user is selecting
         RaycastHit hitInfo = new RaycastHit();
         bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
         if (hit)

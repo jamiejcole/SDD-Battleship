@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ManualCameraRotator : MonoBehaviour
 {
+    // Class used to move the player's viewport around using the A and D keys
+
     public float rotateSpeed = 50f;
 
     public SelectionManager selectionManager;

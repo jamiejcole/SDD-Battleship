@@ -5,6 +5,8 @@ using TMPro;
 
 public class InputWindow : MonoBehaviour
 {
+    // Class used to manage the instantiated input windows used for collecting player usernames
+
     private PregameManager pregameManager;
     private TMP_InputField input;
     public int playerNum;

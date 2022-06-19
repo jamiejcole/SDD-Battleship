@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class PlayerMenuManager : MonoBehaviour
 {
+    // Manages the player menus based on the plaeyr usernames and icons based on whicher player's turn it currently is
+
     [SerializeField]
     GameObject textObj;
 
